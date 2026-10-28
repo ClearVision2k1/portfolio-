@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 700" width="100%" height="100%">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c2a4ff" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#7f40ff" stop-opacity="0.4" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#aa42ff" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#0b080c" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background Aura -->
+  <circle cx="300" cy="350" r="250" fill="url(#glow)" />
+
+  <!-- Stylized Developer Silhouette -->
+  <g fill="none" stroke="url(#grad1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Head / Hair -->
+    <path d="M 230 260 C 220 180, 380 180, 370 260" stroke-width="3" fill="#130d1a" />
+    <circle cx="300" cy="270" r="60" fill="#181122" />
+    <!-- Glasses / Tech Visor -->
+    <rect x="260" y="255" width="35" height="20" rx="4" stroke="#c2a4ff" stroke-width="2" fill="#c2a4ff" fill-opacity="0.2" />
+    <rect x="305" y="255" width="35" height="20" rx="4" stroke="#c2a4ff" stroke-width="2" fill="#c2a4ff" fill-opacity="0.2" />
+    <line x1="295" y1="265" x2="305" y2="265" stroke="#c2a4ff" stroke-width="2" />
+    
+    <!-- Neck -->
+    <path d="M 285 330 L 285 370 L 315 370 L 315 330" fill="#181122" />
+
+    <!-- Shoulders & Body -->
+    <path d="M 170 520 C 180 400, 240 370, 300 370 C 360 370, 420 400, 430 520 Z" fill="#150f1f" />
+    <!-- Laptop / Workspace -->
+    <path d="M 200 520 L 400 520 L 430 580 L 170 580 Z" fill="#0d0914" stroke="#c2a4ff" stroke-width="2" />
+    <!-- Glowing Screen Screenlight -->
+    <polygon points="230,510 370,510 390,440 210,440" fill="#c2a4ff" fill-opacity="0.15" stroke="#c2a4ff" stroke-width="1.5" />
+    <text x="300" y="480" fill="#c2a4ff" font-family="monospace" font-size="14" text-anchor="middle" letter-spacing="2">&lt;ELIYAS HASAN /&gt;</text>
+  </g>
+</svg>
