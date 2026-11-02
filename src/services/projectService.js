@@ -132,6 +132,12 @@ export async function getAllProjects() {
     const techString = p.technologies || (tagsArray.length > 0 ? tagsArray.join(" • ") : "");
     const targetLink = p.link || p.live || p.github || "#";
 
+    let projectImage = p.image;
+    const defaultThumbnail = `/images/projects/project-${p.id || defaultIdx + 1}.webp`;
+    if (!projectImage || projectImage.includes("eliyas-photo.png") || projectImage === "/project-placeholder.webp") {
+      projectImage = defaultThumbnail;
+    }
+
     return {
       id: p.id || defaultIdx + 1,
       title: p.title || "Untitled Project",
@@ -139,7 +145,7 @@ export async function getAllProjects() {
       description: p.description || "",
       technologies: techString,
       tags: tagsArray,
-      image: p.image || "/project-placeholder.webp",
+      image: projectImage,
       github: p.github || "",
       live: p.live || p.link || "",
       link: targetLink,

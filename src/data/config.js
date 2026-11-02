@@ -133,7 +133,7 @@ export const config = {
       title: "Intelligent Web Automation Hub",
       category: "Full-Stack / AI Automation",
       technologies: "React, Node.js, Python, FastAPI, TailwindCSS",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-1.webp",
       description:
         "Automated multi-step workflow engine designed to execute tasks, parse web data, and deliver real-time notifications.",
       link: "https://github.com/ClearVision2k1",
@@ -144,7 +144,7 @@ export const config = {
       title: "Enterprise Web Application",
       category: "Full-Stack Platform",
       technologies: "React, Express, MongoDB, TailwindCSS",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-2.webp",
       description:
         "High-performance responsive web dashboard featuring authentication, real-time analytics, and modular state management.",
       link: "https://github.com/ClearVision2k1",
@@ -155,7 +155,7 @@ export const config = {
       title: "Modern E-Commerce Engine",
       category: "Web & Payment Integration",
       technologies: "Next.js, TypeScript, Stripe, PostgreSQL",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-3.webp",
       description:
         "Fast, SEO-optimized commerce platform with smooth product discovery, cart state synchronization, and secure checkout.",
       link: "https://github.com/ClearVision2k1",
@@ -166,7 +166,7 @@ export const config = {
       title: "Autonomous AI Agent Workflow",
       category: "AI Agents / LLM Orchestration",
       technologies: "Python, LangChain, OpenAI / Gemini, FastAPI",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-4.webp",
       description:
         "Multi-agent autonomous framework coordinating specialized AI workers to perform research, code generation, and task synthesis.",
       link: "https://github.com/ClearVision2k1",
@@ -177,7 +177,7 @@ export const config = {
       title: "Real-Time 3D Web Experience",
       category: "Creative WebGL / Three.js",
       technologies: "Three.js, React Three Fiber, GSAP, WebGL",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-5.webp",
       description:
         "Immersive interactive 3D web experience featuring dynamic physics, custom shaders, smooth camera choreographies, and WebGL rendering.",
       link: "https://github.com/ClearVision2k1",
@@ -188,7 +188,7 @@ export const config = {
       title: "Drishti AI — Large Language Model",
       category: "AI / LLM",
       technologies: "Python, PyTorch, Transformers, FastAPI, React, MongoDB",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-6.webp",
       description:
         "Bangladesh's first intelligent advanced AI chatbot powered by a custom Large Language Model. Features natural language understanding, contextual conversations, and multilingual support including Bengali.",
       link: "https://github.com/ClearVision2k1",
@@ -199,7 +199,7 @@ export const config = {
       title: "VoteChain — Decentralized Voting System",
       category: "Blockchain / Web3",
       technologies: "Solidity, Web3.js, React, Ethereum, IPFS, MetaMask, Node.js",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-7.webp",
       description:
         "A decentralized election system built on blockchain technology ensuring transparent, tamper-proof, and verifiable voting. Features smart contracts for vote integrity and real-time result tracking.",
       link: "https://github.com/ClearVision2k1",
@@ -210,7 +210,7 @@ export const config = {
       title: "Flood Spaces 2.0 — Disaster Prediction AI",
       category: "AI / Machine Learning",
       technologies: "Python, TensorFlow, Pandas, React, FastAPI, GIS",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-8.webp",
       description:
         "Predicts flood risks across Bangladesh up to one month in advance using geospatial satellite telemetry and predictive neural networks, sending automated early alerts to save lives.",
       link: "https://github.com/ClearVision2k1",
@@ -221,7 +221,7 @@ export const config = {
       title: "HealthPulse — Clinical AI Diagnosis Copilot",
       category: "Healthcare AI / Computer Vision",
       technologies: "Python, PyTorch, OpenCV, Next.js, FastAPI, Docker",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-9.webp",
       description:
         "Clinical decision support system analyzing medical scans and diagnostic records with high precision, providing automated findings summarization and triage assistance.",
       link: "https://github.com/ClearVision2k1",
@@ -232,7 +232,7 @@ export const config = {
       title: "ApexTrade — Algorithmic Crypto Trading Engine",
       category: "FinTech / High-Frequency Trading",
       technologies: "TypeScript, Python, WebSockets, PostgreSQL, Redis, Next.js",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-10.webp",
       description:
         "High-frequency quantitative trading platform executing multi-exchange arbitrage and risk-hedged strategies with sub-millisecond latency and real-time telemetry.",
       link: "https://github.com/ClearVision2k1",
@@ -243,7 +243,7 @@ export const config = {
       title: "CyberGuard — Cloud Security & Vulnerability Scanner",
       category: "DevSecOps / Cloud Security",
       technologies: "Go, Python, Docker, Kubernetes, GraphQL, React",
-      image: "/images/projects/eliyas-photo.png",
+      image: "/images/projects/project-11.webp",
       description:
         "Automated continuous cloud security scanner analyzing Kubernetes workloads, Docker images, and code repositories for security misconfigurations and zero-day vulnerabilities.",
       link: "https://github.com/ClearVision2k1",

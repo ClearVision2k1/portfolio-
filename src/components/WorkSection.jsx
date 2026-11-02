@@ -100,21 +100,7 @@ export default function WorkSection() {
         <div className="work-flex" ref={flexRef}>
           {projects.map((project, idx) => (
             <div key={project.id || idx} className="work-box">
-              {/* Top/Bottom alternating: work-info first */}
-              <div className="work-info">
-                <div className="work-title">
-                  <h3>0{idx + 1}</h3>
-                  <div>
-                    <h4>{project.title}</h4>
-                    <p>{project.category}</p>
-                  </div>
-                </div>
-
-                <h4>Tools and features</h4>
-                <p>{project.technologies || project.description}</p>
-              </div>
-
-              {/* Work image container */}
+              {/* Project Thumbnail on TOP */}
               <div className="work-image">
                 <a
                   className="work-image-in"
@@ -133,6 +119,20 @@ export default function WorkSection() {
                     <ArrowUpRight size={18} />
                   </div>
                 </a>
+              </div>
+
+              {/* Work info below thumbnail */}
+              <div className="work-info">
+                <div className="work-title">
+                  <h3>0{idx + 1}</h3>
+                  <div>
+                    <h4>{project.title}</h4>
+                    <p>{project.category}</p>
+                  </div>
+                </div>
+
+                <h4>Tools and features</h4>
+                <p>{project.technologies || project.description}</p>
               </div>
             </div>
           ))}

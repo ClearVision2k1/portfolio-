@@ -449,9 +449,9 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Row 5: Screenshot / Image Upload with Auto-compression */}
+              {/* Row 5: Project Thumbnail Upload with Auto-compression */}
               <div className="admin-input-group">
-                <label>Project Screenshot / Cover</label>
+                <label>Project Thumbnail (16:9 Image) <span className="admin-required">*</span></label>
                 <div className="admin-dropzone-wrap">
                   <input
                     type="file"
@@ -464,10 +464,10 @@ export default function AdminDashboard() {
                     <Upload size={22} color="#a87cff" />
                     <div>
                       <p className="dropzone-title">
-                        {addCompressing ? "Compressing image for Cloudflare D1..." : "Click to browse or drop screenshot here"}
+                        {addCompressing ? "Compressing thumbnail for Cloudflare D1..." : "Click to browse or drop project thumbnail here"}
                       </p>
                       <p className="dropzone-subtitle">
-                        Automatically compressed to high-res WebP (&lt; 100KB) for direct D1 storage.
+                        Automatically optimized to lightweight high-res WebP (&lt; 100KB) for direct D1 storage.
                       </p>
                     </div>
                   </label>
@@ -769,7 +769,7 @@ export default function AdminDashboard() {
               </div>
 
               <div className="admin-input-group">
-                <label>Replace Screenshot / Cover</label>
+                <label>Project Thumbnail (Replace or keep current)</label>
                 <div className="admin-dropzone-wrap">
                   <input
                     type="file"
@@ -782,8 +782,8 @@ export default function AdminDashboard() {
                     <Upload size={18} color="#a87cff" />
                     <span>
                       {editCompressing
-                        ? "Compressing new image..."
-                        : "Click to upload replacement image (WebP Auto-optimized)"}
+                        ? "Compressing new thumbnail..."
+                        : "Click to upload replacement thumbnail (WebP Auto-optimized)"}
                     </span>
                   </label>
 

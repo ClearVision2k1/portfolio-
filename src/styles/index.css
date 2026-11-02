@@ -1536,7 +1536,7 @@ li:hover .hover-in {
 }
 
 .work-flex .work-box:nth-child(2n) {
-  flex-direction: column-reverse;
+  flex-direction: column;
 }
 
 .work-title {
