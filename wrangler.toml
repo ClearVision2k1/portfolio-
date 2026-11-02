@@ -7,3 +7,15 @@ directory = "./dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 html_handling = "auto-trailing-slash"
+
+[vars]
+ADMIN_PASSWORD = "112212123"
+
+# Cloudflare D1 Native Database Binding
+# When you create your D1 database via Cloudflare dashboard or:
+#   npx wrangler d1 create portfolio-db
+# Uncomment the block below and insert your database_id:
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "portfolio-db"
+# database_id = "<your-database-id-here>"

@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { config } from "../data/config";
+import { getAllProjects } from "../services/projectService";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -11,8 +12,22 @@ export default function WorkSection() {
   const sectionRef = useRef(null);
   const flexRef = useRef(null);
 
-  // Home section features the 5 personal showcased projects
-  const featuredProjects = config.projects.filter((p) => p.featured !== false).slice(0, 5);
+  // Initialize with static projects, then sync with dynamic backend / cache
+  const [projects, setProjects] = useState(() =>
+    config.projects.filter((p) => p.featured !== false).slice(0, 5)
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+    getAllProjects().then((all) => {
+      if (isMounted && all && all.length > 0) {
+        setProjects(all.slice(0, 5));
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (window.innerWidth <= 768) return;
@@ -73,7 +88,7 @@ export default function WorkSection() {
       const st = ScrollTrigger.getById("work-pin");
       if (st) st.kill();
     };
-  }, []);
+  }, [projects]);
 
   return (
     <div className="work-section" id="work" ref={sectionRef}>
@@ -83,8 +98,8 @@ export default function WorkSection() {
         </h2>
 
         <div className="work-flex" ref={flexRef}>
-          {featuredProjects.map((project, idx) => (
-            <div key={project.id} className="work-box">
+          {projects.map((project, idx) => (
+            <div key={project.id || idx} className="work-box">
               {/* Top/Bottom alternating: work-info first */}
               <div className="work-info">
                 <div className="work-title">

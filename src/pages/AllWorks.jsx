@@ -1,11 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { config } from "../data/config";
+import { getAllProjects } from "../services/projectService";
 
 export default function AllWorks() {
+  const [projects, setProjects] = useState(() => config.projects);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
+    let isMounted = true;
+    getAllProjects().then((all) => {
+      if (isMounted && all && all.length > 0) {
+        setProjects(all);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return (
@@ -32,7 +44,7 @@ export default function AllWorks() {
 
         {/* All Works Responsive Grid */}
         <div className="all-works-grid">
-          {config.projects.map((project, idx) => (
+          {projects.map((project, idx) => (
             <a
               key={project.id}
               href={project.link}
