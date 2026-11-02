@@ -104,7 +104,7 @@ export default function ThreeCharacter() {
     let scrollTriggerCleanups = [];
 
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath("/draco/");
+    dracoLoader.setDecoderPath("https://www.gstatic.com/draco/versioned/decoders/1.5.7/");
 
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
@@ -275,7 +275,7 @@ export default function ThreeCharacter() {
           },
         });
 
-        if (window.innerWidth > 1024) {
+        if (window.innerWidth >= 768) {
           // Landing -> About
           landingTL
             .fromTo(model.rotation, { y: 0 }, { y: 0.7, duration: 1 }, 0)
@@ -322,6 +322,8 @@ export default function ThreeCharacter() {
             .fromTo(".character-model", { y: "0%" }, { y: "-100%", duration: 4, ease: "none", delay: 1 }, 0)
             .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)
             .to(model.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+
+          ScrollTrigger.refresh();
         }
 
         scrollTriggerCleanups.push(() => {
@@ -404,7 +406,7 @@ export default function ThreeCharacter() {
             clampedY,
             sensitivity.y
           );
-        } else if (window.innerWidth > 1024) {
+        } else if (window.innerWidth >= 768) {
           spine006.rotation.x = THREE.MathUtils.lerp(spine006.rotation.x, -0.4, 0.03);
           spine006.rotation.y = THREE.MathUtils.lerp(spine006.rotation.y, -0.3, 0.03);
         }

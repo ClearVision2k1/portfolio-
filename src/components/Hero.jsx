@@ -23,7 +23,7 @@ export default function Hero() {
             src="/images/image.png"
             alt={config.developer.fullName}
             loading="eager"
-            fetchPriority="high"
+            fetchpriority="high"
           />
         </div>
 
