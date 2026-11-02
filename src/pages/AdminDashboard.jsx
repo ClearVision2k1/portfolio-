@@ -60,11 +60,15 @@ export default function AdminDashboard() {
     tags: "",
     github: "",
     live: "",
-    image: "",
+    image: "", // Cover Thumbnail
+    screenshots: ["", "", ""], // 3 Showcase Screenshots
+    how_built: "",
+    features: "",
   };
   const [addForm, setAddForm] = useState(initialAddForm);
   const [addImagePreview, setAddImagePreview] = useState("");
   const [addCompressing, setAddCompressing] = useState(false);
+  const [addScreenCompressing, setAddScreenCompressing] = useState([false, false, false]);
   const [addSaving, setAddSaving] = useState(false);
 
   // -------------------------------------------------------------
@@ -76,6 +80,7 @@ export default function AdminDashboard() {
   const [editForm, setEditForm] = useState(null);
   const [editImagePreview, setEditImagePreview] = useState("");
   const [editCompressing, setEditCompressing] = useState(false);
+  const [editScreenCompressing, setEditScreenCompressing] = useState([false, false, false]);
   const [editSaving, setEditSaving] = useState(false);
 
   // Security Check: Redirect if not authenticated
@@ -124,12 +129,46 @@ export default function AdminDashboard() {
       const compressedDataUrl = await compressImage(file, 1200, 800, 0.82);
       setAddImagePreview(compressedDataUrl);
       setAddForm((prev) => ({ ...prev, image: compressedDataUrl }));
-      showToast("Image optimized for D1 storage", "success");
+      showToast("Thumbnail optimized for D1 storage", "success");
     } catch (err) {
-      showToast("Image optimization failed", "error");
+      showToast("Thumbnail optimization failed", "error");
     } finally {
       setAddCompressing(false);
     }
+  };
+
+  const handleAddScreenshotChange = async (index, file) => {
+    if (!file) return;
+    setAddScreenCompressing((prev) => {
+      const next = [...prev];
+      next[index] = true;
+      return next;
+    });
+    try {
+      const compressedDataUrl = await compressImage(file, 1200, 750, 0.82);
+      setAddForm((prev) => {
+        const nextScreens = [...(prev.screenshots || ["", "", ""])];
+        nextScreens[index] = compressedDataUrl;
+        return { ...prev, screenshots: nextScreens };
+      });
+      showToast(`Screenshot 0${index + 1} optimized`, "success");
+    } catch (err) {
+      showToast("Screenshot compression failed", "error");
+    } finally {
+      setAddScreenCompressing((prev) => {
+        const next = [...prev];
+        next[index] = false;
+        return next;
+      });
+    }
+  };
+
+  const handleRemoveAddScreenshot = (index) => {
+    setAddForm((prev) => {
+      const nextScreens = [...(prev.screenshots || ["", "", ""])];
+      nextScreens[index] = "";
+      return { ...prev, screenshots: nextScreens };
+    });
   };
 
   const handleAddSubmit = async (e) => {
@@ -163,6 +202,33 @@ export default function AdminDashboard() {
   // -------------------------------------------------------------
   const handleOpenEdit = (project) => {
     setEditingProject(project);
+
+    let screens = ["", "", ""];
+    if (Array.isArray(project.screenshots) && project.screenshots.length > 0) {
+      screens = [
+        project.screenshots[0] || "",
+        project.screenshots[1] || "",
+        project.screenshots[2] || "",
+      ];
+    } else if (typeof project.screenshots === "string" && project.screenshots) {
+      try {
+        const parsed = JSON.parse(project.screenshots);
+        if (Array.isArray(parsed)) {
+          screens = [parsed[0] || "", parsed[1] || "", parsed[2] || ""];
+        }
+      } catch (e) {
+        screens = project.screenshots.split(",").slice(0, 3);
+        while (screens.length < 3) screens.push("");
+      }
+    }
+
+    let feats = project.features;
+    if (Array.isArray(feats)) {
+      feats = feats.join("\n");
+    } else if (typeof feats !== "string") {
+      feats = "";
+    }
+
     setEditForm({
       title: project.title,
       category: project.category || "Full-Stack Web Development",
@@ -171,6 +237,9 @@ export default function AdminDashboard() {
       github: project.github || "",
       live: project.live || project.link || "",
       image: project.image || "",
+      screenshots: screens,
+      how_built: project.how_built || "",
+      features: feats,
     });
     setEditImagePreview(project.image || "");
   };
@@ -190,12 +259,46 @@ export default function AdminDashboard() {
       const compressedDataUrl = await compressImage(file, 1200, 800, 0.82);
       setEditImagePreview(compressedDataUrl);
       setEditForm((prev) => ({ ...prev, image: compressedDataUrl }));
-      showToast("New image compressed & ready", "success");
+      showToast("New thumbnail compressed & ready", "success");
     } catch (err) {
-      showToast("Image compression failed", "error");
+      showToast("Thumbnail compression failed", "error");
     } finally {
       setEditCompressing(false);
     }
+  };
+
+  const handleEditScreenshotChange = async (index, file) => {
+    if (!file) return;
+    setEditScreenCompressing((prev) => {
+      const next = [...prev];
+      next[index] = true;
+      return next;
+    });
+    try {
+      const compressedDataUrl = await compressImage(file, 1200, 750, 0.82);
+      setEditForm((prev) => {
+        const nextScreens = [...(prev?.screenshots || ["", "", ""])];
+        nextScreens[index] = compressedDataUrl;
+        return { ...prev, screenshots: nextScreens };
+      });
+      showToast(`Screenshot 0${index + 1} updated`, "success");
+    } catch (err) {
+      showToast("Screenshot compression failed", "error");
+    } finally {
+      setEditScreenCompressing((prev) => {
+        const next = [...prev];
+        next[index] = false;
+        return next;
+      });
+    }
+  };
+
+  const handleRemoveEditScreenshot = (index) => {
+    setEditForm((prev) => {
+      const nextScreens = [...(prev?.screenshots || ["", "", ""])];
+      nextScreens[index] = "";
+      return { ...prev, screenshots: nextScreens };
+    });
   };
 
   const handleEditSubmit = async (e) => {
@@ -490,6 +593,100 @@ export default function AdminDashboard() {
                     </div>
                   )}
                 </div>
+              </div>
+
+              {/* Row 6: 3 Project Showcase Screenshots */}
+              <div className="admin-input-group">
+                <div className="admin-group-header">
+                  <label>3 Showcase Screenshots (Showcase Gallery)</label>
+                  <span className="admin-label-hint">
+                    These 3 screenshots appear at the top inside the project detail view.
+                  </span>
+                </div>
+
+                <div className="admin-screenshots-grid">
+                  {[0, 1, 2].map((idx) => {
+                    const screenPreview = addForm.screenshots?.[idx];
+                    const isCompressing = addScreenCompressing[idx];
+                    const slotLabels = [
+                      "Screen 01: Core UI",
+                      "Screen 02: Architecture",
+                      "Screen 03: Telemetry",
+                    ];
+
+                    return (
+                      <div key={idx} className="admin-screen-slot">
+                        <span className="slot-badge">{slotLabels[idx]}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          id={`add-screen-file-${idx}`}
+                          onChange={(e) =>
+                            handleAddScreenshotChange(idx, e.target.files?.[0])
+                          }
+                          style={{ display: "none" }}
+                        />
+
+                        {screenPreview ? (
+                          <div className="admin-screen-preview">
+                            <img
+                              src={screenPreview}
+                              alt={`Screenshot ${idx + 1}`}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveAddScreenshot(idx)}
+                              className="admin-screen-delete-btn"
+                              title="Remove screenshot"
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        ) : (
+                          <label
+                            htmlFor={`add-screen-file-${idx}`}
+                            className="admin-screen-dropzone"
+                          >
+                            <Upload size={18} color="#a87cff" />
+                            <span>
+                              {isCompressing
+                                ? "Optimizing..."
+                                : `Upload ${slotLabels[idx].split(":")[0]}`}
+                            </span>
+                          </label>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Row 7: How I Built This */}
+              <div className="admin-input-group">
+                <label>
+                  How I Built This Project (আমি কিভাবে প্রজেক্টগুলা করলাম)
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder="Detail your engineering approach, system architecture, challenges overcome, and design decisions..."
+                  value={addForm.how_built}
+                  onChange={(e) =>
+                    setAddForm({ ...addForm, how_built: e.target.value })
+                  }
+                />
+              </div>
+
+              {/* Row 8: Key Features */}
+              <div className="admin-input-group">
+                <label>Key Features & Highlights (One per line)</label>
+                <textarea
+                  rows={3}
+                  placeholder="Automated webhooks with zero packet loss&#10;Cloudflare D1 edge database caching&#10;Sub-second real-time notifications"
+                  value={addForm.features}
+                  onChange={(e) =>
+                    setAddForm({ ...addForm, features: e.target.value })
+                  }
+                />
               </div>
 
               {/* Action Buttons */}
@@ -805,6 +1002,100 @@ export default function AdminDashboard() {
                     </div>
                   )}
                 </div>
+              </div>
+
+              {/* Edit: 3 Project Showcase Screenshots */}
+              <div className="admin-input-group">
+                <div className="admin-group-header">
+                  <label>3 Showcase Screenshots (Showcase Gallery)</label>
+                  <span className="admin-label-hint">
+                    These 3 screenshots appear at the top inside the project detail view.
+                  </span>
+                </div>
+
+                <div className="admin-screenshots-grid">
+                  {[0, 1, 2].map((idx) => {
+                    const screenPreview = editForm.screenshots?.[idx];
+                    const isCompressing = editScreenCompressing[idx];
+                    const slotLabels = [
+                      "Screen 01: Core UI",
+                      "Screen 02: Architecture",
+                      "Screen 03: Telemetry",
+                    ];
+
+                    return (
+                      <div key={idx} className="admin-screen-slot">
+                        <span className="slot-badge">{slotLabels[idx]}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          id={`edit-screen-file-${idx}`}
+                          onChange={(e) =>
+                            handleEditScreenshotChange(idx, e.target.files?.[0])
+                          }
+                          style={{ display: "none" }}
+                        />
+
+                        {screenPreview ? (
+                          <div className="admin-screen-preview">
+                            <img
+                              src={screenPreview}
+                              alt={`Screenshot ${idx + 1}`}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRemoveEditScreenshot(idx)}
+                              className="admin-screen-delete-btn"
+                              title="Remove screenshot"
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        ) : (
+                          <label
+                            htmlFor={`edit-screen-file-${idx}`}
+                            className="admin-screen-dropzone"
+                          >
+                            <Upload size={18} color="#a87cff" />
+                            <span>
+                              {isCompressing
+                                ? "Optimizing..."
+                                : `Upload ${slotLabels[idx].split(":")[0]}`}
+                            </span>
+                          </label>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Edit: How I Built This */}
+              <div className="admin-input-group">
+                <label>
+                  How I Built This Project (আমি কিভাবে প্রজেক্টগুলা করলাম)
+                </label>
+                <textarea
+                  rows={4}
+                  placeholder="Detail your engineering approach, system architecture, challenges overcome, and design decisions..."
+                  value={editForm.how_built}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, how_built: e.target.value })
+                  }
+                />
+              </div>
+
+              {/* Edit: Key Features */}
+              <div className="admin-input-group">
+                <label>Key Features & Highlights (One per line)</label>
+                <textarea
+                  rows={3}
+                  placeholder="Automated webhooks with zero packet loss&#10;Cloudflare D1 edge database caching&#10;Sub-second real-time notifications"
+                  value={editForm.features}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, features: e.target.value })
+                  }
+                />
               </div>
 
               <div className="admin-modal-footer">

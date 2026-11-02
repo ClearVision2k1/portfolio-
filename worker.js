@@ -79,6 +79,9 @@ export default {
             description TEXT,
             tags TEXT,
             image TEXT,
+            screenshots TEXT,
+            how_built TEXT,
+            features TEXT,
             github TEXT,
             live TEXT,
             order_index INTEGER DEFAULT 0,
@@ -122,15 +125,17 @@ export default {
       }
       try {
         const body = await request.json();
-        const { title, category, description, tags, image, github, live, order_index } = body;
+        const { title, category, description, tags, image, screenshots, how_built, features, github, live, order_index } = body;
 
         if (!title || !category) {
           return jsonResponse({ success: false, error: "Title and category are required" }, 400);
         }
 
+        const screenshotsStr = typeof screenshots === "object" ? JSON.stringify(screenshots) : (screenshots || "");
+
         const info = await env.DB.prepare(
-          `INSERT INTO projects (title, category, description, tags, image, github, live, order_index)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+          `INSERT INTO projects (title, category, description, tags, image, screenshots, how_built, features, github, live, order_index)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         )
           .bind(
             title,
@@ -138,6 +143,9 @@ export default {
             description || "",
             tags || "",
             image || "",
+            screenshotsStr,
+            how_built || "",
+            features || "",
             github || "",
             live || "",
             order_index || 0
@@ -182,7 +190,9 @@ export default {
       if (request.method === "PUT") {
         try {
           const body = await request.json();
-          const { title, category, description, tags, image, github, live, order_index } = body;
+          const { title, category, description, tags, image, screenshots, how_built, features, github, live, order_index } = body;
+
+          const screenshotsStr = typeof screenshots === "object" ? JSON.stringify(screenshots) : (screenshots || "");
 
           await env.DB.prepare(
             `UPDATE projects SET
@@ -191,6 +201,9 @@ export default {
               description = ?,
               tags = ?,
               image = ?,
+              screenshots = ?,
+              how_built = ?,
+              features = ?,
               github = ?,
               live = ?,
               order_index = ?
@@ -202,6 +215,9 @@ export default {
               description || "",
               tags || "",
               image || "",
+              screenshotsStr,
+              how_built || "",
+              features || "",
               github || "",
               live || "",
               order_index || 0,

@@ -100,14 +100,13 @@ export default function WorkSection() {
         <div className="work-flex" ref={flexRef}>
           {projects.map((project, idx) => (
             <div key={project.id || idx} className="work-box">
-              {/* Project Thumbnail on TOP */}
+              {/* Project Thumbnail on TOP - Clicking opens Project Detail */}
               <div className="work-image">
-                <a
+                <Link
                   className="work-image-in"
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  to={`/project/${project.id}`}
                   data-cursor="disable"
+                  title={`View ${project.title} details`}
                 >
                   <img
                     src={project.image}
@@ -118,7 +117,7 @@ export default function WorkSection() {
                   <div className="work-link">
                     <ArrowUpRight size={18} />
                   </div>
-                </a>
+                </Link>
               </div>
 
               {/* Work info below thumbnail */}
@@ -126,7 +125,12 @@ export default function WorkSection() {
                 <div className="work-title">
                   <h3>0{idx + 1}</h3>
                   <div>
-                    <h4>{project.title}</h4>
+                    <Link
+                      to={`/project/${project.id}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <h4>{project.title}</h4>
+                    </Link>
                     <p>{project.category}</p>
                   </div>
                 </div>

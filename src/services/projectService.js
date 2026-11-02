@@ -138,14 +138,64 @@ export async function getAllProjects() {
       projectImage = defaultThumbnail;
     }
 
+    // Normalize Screenshots (Ensure 3 showcase screenshots)
+    let screenshots = p.screenshots;
+    if (typeof screenshots === "string" && screenshots.startsWith("[")) {
+      try {
+        screenshots = JSON.parse(screenshots);
+      } catch (e) {
+        screenshots = [];
+      }
+    } else if (typeof screenshots === "string" && screenshots.includes(",")) {
+      screenshots = screenshots.split(",").map((s) => s.trim()).filter(Boolean);
+    }
+    const pid = p.id || defaultIdx + 1;
+    if (!Array.isArray(screenshots) || screenshots.length === 0) {
+      screenshots = [
+        `/images/projects/screens/project-${pid}-s1.webp`,
+        `/images/projects/screens/project-${pid}-s2.webp`,
+        `/images/projects/screens/project-${pid}-s3.webp`,
+      ];
+    } else {
+      // Ensure at least 3 items
+      while (screenshots.length < 3) {
+        screenshots.push(`/images/projects/screens/project-${pid}-s${screenshots.length + 1}.webp`);
+      }
+    }
+
+    // Normalize Features
+    let features = p.features;
+    if (typeof features === "string" && features.startsWith("[")) {
+      try {
+        features = JSON.parse(features);
+      } catch (e) {
+        features = features.split("\n").filter(Boolean);
+      }
+    } else if (typeof features === "string") {
+      features = features.split("\n").map((f) => f.trim().replace(/^[-•*]\s*/, "")).filter(Boolean);
+    }
+    if (!Array.isArray(features) || features.length === 0) {
+      features = [
+        "Engineered with scalable micro-architecture and high-throughput data processing.",
+        "Integrated modern API workflows, automated error handling, and structured schema validations.",
+        "Ultra-responsive interface with dark cyberpunk styling and seamless micro-interactions.",
+        "Production-ready deployment on modern cloud edge infrastructure with zero cold starts."
+      ];
+    }
+
+    const howBuilt = p.how_built || `This project was engineered by Eliyas Hasan to address complex workflow challenges and deliver high-impact digital experiences. Combining modern frontend frameworks with robust backend services and autonomous AI pipelines, the architecture guarantees fast load times, bulletproof data integrity, and intuitive user experiences.`;
+
     return {
-      id: p.id || defaultIdx + 1,
+      id: pid,
       title: p.title || "Untitled Project",
       category: p.category || "Full-Stack Web Development",
       description: p.description || "",
       technologies: techString,
       tags: tagsArray,
       image: projectImage,
+      screenshots: screenshots.slice(0, 3),
+      how_built: howBuilt,
+      features: features,
       github: p.github || "",
       live: p.live || p.link || "",
       link: targetLink,
@@ -164,6 +214,15 @@ export async function getAllProjects() {
 
   // Default to config.projects
   return config.projects.map((p, idx) => normalizeProject(p, idx));
+}
+
+/**
+ * Fetch a Single Project by ID
+ */
+export async function getProjectById(id) {
+  const all = await getAllProjects();
+  const numericId = parseInt(id, 10);
+  return all.find((p) => p.id === numericId || String(p.id) === String(id)) || null;
 }
 
 /**

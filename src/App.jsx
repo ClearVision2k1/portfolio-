@@ -6,6 +6,7 @@ import SocialSidebar from "./components/SocialSidebar";
 import ResumeButton from "./components/ResumeButton";
 import Home from "./pages/Home";
 import AllWorks from "./pages/AllWorks";
+import ProjectDetail from "./pages/ProjectDetail";
 import AdminAuthModal from "./components/AdminAuthModal";
 
 // Lazy-load Admin Dashboard so visitors don't download admin code unnecessarily
@@ -48,6 +49,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/myworks" element={<AllWorks />} />
+        <Route path="/project/:id" element={<ProjectDetail />} />
+        <Route path="/works/:id" element={<ProjectDetail />} />
         <Route
           path="/admin"
           element={

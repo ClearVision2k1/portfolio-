@@ -45,11 +45,9 @@ export default function AllWorks() {
         {/* All Works Responsive Grid */}
         <div className="all-works-grid">
           {projects.map((project, idx) => (
-            <a
+            <Link
               key={project.id}
-              href={project.link}
-              target="_blank"
-              rel="noopener noreferrer"
+              to={`/project/${project.id}`}
               className="all-works-card"
               data-cursor="disable"
             >
@@ -75,7 +73,7 @@ export default function AllWorks() {
                 <p className="card-description">{project.description}</p>
                 <div className="card-tech">{project.technologies}</div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 
