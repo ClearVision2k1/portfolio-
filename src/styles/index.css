@@ -2306,8 +2306,8 @@ a.contact-social:hover {
   border-radius: 100px;
   background-color: #000;
   overflow: hidden;
-  transition: 0.8s ease-in-out;
-  transition-delay: 0.2s;
+  transition: 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: 0s;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
   display: flex;
   justify-content: center;

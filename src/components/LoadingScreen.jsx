@@ -7,40 +7,21 @@ export default function LoadingScreen({ onComplete }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isExited, setIsExited] = useState(false);
 
-  // Smooth realistic percentage count-up
+  // Ultra-fast millisecond percentage count-up (under 1 second)
   useEffect(() => {
     let current = 0;
     const interval = setInterval(() => {
-      if (current < 65) {
-        current += Math.floor(Math.random() * 6) + 3;
-        if (current > 65) current = 65;
-        setPercent(current);
-      } else if (current < 92) {
-        current += Math.floor(Math.random() * 3) + 1;
-        if (current > 92) current = 92;
-        setPercent(current);
-      } else if (current < 100) {
-        current += 1;
-        setPercent(current);
-      } else {
+      // Step increment between 3 and 7 for a rapid, cybernetic count-up in ~350-450ms
+      const step = Math.floor(Math.random() * 5) + 3;
+      current += step;
+      if (current >= 100) {
+        current = 100;
+        setPercent(100);
         clearInterval(interval);
+      } else {
+        setPercent(current);
       }
-    }, 45);
-
-    // After 2 seconds, quickly finish to 100%
-    const forceFinish = setTimeout(() => {
-      clearInterval(interval);
-      let finishCur = current;
-      const finishInterval = setInterval(() => {
-        if (finishCur < 100) {
-          finishCur += 2;
-          if (finishCur > 100) finishCur = 100;
-          setPercent(finishCur);
-        } else {
-          clearInterval(finishInterval);
-        }
-      }, 15);
-    }, 1800);
+    }, 16); // 16ms (~60fps frame rate) for lightning-fast millisecond count
 
     window.__skipLoader = () => {
       setIsExited(true);
@@ -49,26 +30,25 @@ export default function LoadingScreen({ onComplete }) {
 
     return () => {
       clearInterval(interval);
-      clearTimeout(forceFinish);
       delete window.__skipLoader;
     };
   }, []);
 
-  // When 100% reached, trigger "Welcome" and curtain expansion sequence
+  // When 100% reached, quickly flash "WELCOME" and smoothly expand
   useEffect(() => {
     if (percent >= 100) {
       const t1 = setTimeout(() => {
         setIsComplete(true); // Switches "LOADING" -> "WELCOME"
-      }, 400);
+      }, 150);
 
       const t2 = setTimeout(() => {
-        setIsExpanded(true); // Pill smoothly expands to fill screen
-      }, 1200);
+        setIsExpanded(true); // Pill smoothly expands to open into portfolio
+      }, 450);
 
       const t3 = setTimeout(() => {
         setIsExited(true);
         if (onComplete) onComplete();
-      }, 2100);
+      }, 800);
 
       return () => {
         clearTimeout(t1);
