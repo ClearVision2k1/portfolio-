@@ -25,7 +25,7 @@ export default function Navbar({ onRestartLoader }) {
   return (
     <>
       <header className={`header ${scrolled ? "header-scrolled" : ""}`}>
-        {/* Left: Small Circular Profile Avatar */}
+        {/* Left: EH Monogram Logo Badge */}
         <a
           href="/#"
           className="navbar-title navbar-avatar-link"
@@ -37,12 +37,8 @@ export default function Navbar({ onRestartLoader }) {
             if (onRestartLoader) onRestartLoader();
           }}
         >
-          <div className="navbar-avatar-frame">
-            <img
-              src="/images/eliyas-avatar.png"
-              alt={config.developer.fullName}
-              className="navbar-avatar-img"
-            />
+          <div className="navbar-avatar-frame navbar-logo-frame">
+            <span className="navbar-eh-logo">EH</span>
           </div>
         </a>
 
