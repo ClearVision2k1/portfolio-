@@ -19,6 +19,8 @@ import {
   Filter,
   X,
   RotateCcw,
+  Globe,
+  Code2,
 } from "lucide-react";
 import {
   isAuthenticated,
@@ -45,7 +47,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState(null);
 
-  // Active Tab: "add" (প্রজেক্ট অ্যাড করা) or "edit" (প্রজেক্ট এডিট করা)
+  // Active Tab: "add" or "edit"
   const [activeTab, setActiveTab] = useState("add");
 
   // -------------------------------------------------------------
@@ -70,7 +72,7 @@ export default function AdminDashboard() {
   // -------------------------------------------------------------
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
-  const [editingProject, setEditingProject] = useState(null); // Project currently in edit modal
+  const [editingProject, setEditingProject] = useState(null);
   const [editForm, setEditForm] = useState(null);
   const [editImagePreview, setEditImagePreview] = useState("");
   const [editCompressing, setEditCompressing] = useState(false);
@@ -111,7 +113,7 @@ export default function AdminDashboard() {
   };
 
   // -------------------------------------------------------------
-  // HANDLERS FOR OPTION 1: ADD PROJECT
+  // HANDLERS FOR ADD PROJECT
   // -------------------------------------------------------------
   const handleAddImageChange = async (e) => {
     const file = e.target.files?.[0];
@@ -122,9 +124,9 @@ export default function AdminDashboard() {
       const compressedDataUrl = await compressImage(file, 1200, 800, 0.82);
       setAddImagePreview(compressedDataUrl);
       setAddForm((prev) => ({ ...prev, image: compressedDataUrl }));
-      showToast("Image compressed & ready for D1", "success");
+      showToast("Image optimized for D1 storage", "success");
     } catch (err) {
-      showToast("Image compression failed", "error");
+      showToast("Image optimization failed", "error");
     } finally {
       setAddCompressing(false);
     }
@@ -140,12 +142,12 @@ export default function AdminDashboard() {
     setAddSaving(true);
     try {
       await createProject(addForm);
-      showToast("Project added & published successfully!", "success");
+      showToast("Project published successfully!", "success");
       setAddForm(initialAddForm);
       setAddImagePreview("");
       await loadProjects();
     } catch (err) {
-      showToast(err.message || "Failed to add project", "error");
+      showToast(err.message || "Failed to publish project", "error");
     } finally {
       setAddSaving(false);
     }
@@ -157,7 +159,7 @@ export default function AdminDashboard() {
   };
 
   // -------------------------------------------------------------
-  // HANDLERS FOR OPTION 2: EDIT PROJECT
+  // HANDLERS FOR EDIT PROJECT
   // -------------------------------------------------------------
   const handleOpenEdit = (project) => {
     setEditingProject(project);
@@ -220,7 +222,7 @@ export default function AdminDashboard() {
     if (window.confirm(`Are you sure you want to delete "${title}"?`)) {
       try {
         await deleteProject(id);
-        showToast("Project removed successfully", "success");
+        showToast("Project deleted successfully", "success");
         await loadProjects();
       } catch (err) {
         showToast("Delete failed", "error");
@@ -228,7 +230,7 @@ export default function AdminDashboard() {
     }
   };
 
-  // Filtered projects for Option 2 (Edit view)
+  // Filtered projects for Edit view
   const filteredProjects = projects.filter((p) => {
     const matchesSearch =
       !searchQuery ||
@@ -254,27 +256,27 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {/* Top Navbar */}
+      {/* Top Navigation Bar */}
       <header className="admin-topbar">
         <div className="admin-topbar-left">
           <Link to="/" className="admin-back-btn">
-            <ArrowLeft size={16} />
+            <ArrowLeft size={15} />
             <span>Back to Portfolio</span>
           </Link>
           <div className="admin-brand-badge">
             <span className="admin-brand-dot" />
-            <span>EH Control Center</span>
+            <span>Admin Control Panel</span>
           </div>
         </div>
 
         <div className="admin-topbar-right">
-          <div className="admin-db-status" title="Cloudflare D1 & Cache Sync">
-            <Database size={15} color="#c2a4ff" />
-            <span>Cloudflare D1 Synced</span>
+          <div className="admin-db-status" title="Cloudflare D1 Database Active">
+            <Database size={14} color="#a87cff" />
+            <span>Cloudflare D1</span>
           </div>
-          <button onClick={handleLogout} className="admin-logout-btn">
-            <LogOut size={16} />
-            <span>Logout</span>
+          <button onClick={handleLogout} className="admin-logout-btn" title="Sign out of Admin">
+            <LogOut size={15} />
+            <span>Sign Out</span>
           </button>
         </div>
       </header>
@@ -282,98 +284,84 @@ export default function AdminDashboard() {
       {/* Main Container */}
       <main className="admin-container">
         {/* Header Hero */}
-        <section className="admin-hero">
+        <section className="admin-header-row">
           <div>
-            <h1>Project Management Dashboard</h1>
+            <h1>Project Management</h1>
             <p>
-              Manage your personal portfolio showcase. Easily add new creations or update existing projects.
+              Manage portfolio projects, live deployments, and Cloudflare D1 storage.
             </p>
           </div>
 
-          {/* Quick Stats Pill */}
-          <div className="admin-quick-stats">
-            <div className="admin-quick-stat-item">
-              <Layers size={16} color="#c2a4ff" />
-              <span><strong>{projects.length}</strong> Total Projects</span>
+          {/* Quick Metrics */}
+          <div className="admin-metrics-group">
+            <div className="admin-metric-badge">
+              <Layers size={15} color="#c2a4ff" />
+              <span><strong>{projects.length}</strong> Projects</span>
             </div>
-            <div className="admin-quick-stat-item">
-              <Sparkles size={16} color="#a87cff" />
+            <div className="admin-metric-badge">
+              <Sparkles size={15} color="#a87cff" />
               <span><strong>{new Set(projects.map((p) => p.category)).size}</strong> Categories</span>
             </div>
-            <div className="admin-quick-stat-item">
-              <Database size={16} color="#22c55e" />
-              <span><strong>5 GB</strong> D1 Storage</span>
+            <div className="admin-metric-badge">
+              <Database size={15} color="#22c55e" />
+              <span><strong>5 GB</strong> Free D1</span>
             </div>
           </div>
         </section>
 
         {/* ------------------------------------------------------------- */}
-        {/* TWO PROMINENT OPTIONS: ADD PROJECT & EDIT PROJECT */}
+        {/* TWO CLEAN DEDICATED TABS */}
         {/* ------------------------------------------------------------- */}
-        <section className="admin-option-selector">
-          <button
-            type="button"
-            className={`admin-option-card ${activeTab === "add" ? "active" : ""}`}
-            onClick={() => setActiveTab("add")}
-          >
-            <div className="admin-option-icon">
-              <Plus size={24} />
-            </div>
-            <div className="admin-option-info">
-              <div className="admin-option-badge">OPTION 1</div>
-              <h3>প্রজেক্ট অ্যাড করা (Add Project)</h3>
-              <p>নতুন প্রজেক্টের টাইটেল, ডেসক্রিপশন, ট্যাগ ও ছবি দিয়ে পোর্টফোলিওতে সরাসরি যুক্ত করুন।</p>
-            </div>
-          </button>
+        <div className="admin-tabs-container">
+          <div className="admin-tabs-nav">
+            <button
+              type="button"
+              className={`admin-tab-item ${activeTab === "add" ? "active" : ""}`}
+              onClick={() => setActiveTab("add")}
+            >
+              <Plus size={16} />
+              <span>Add New Project</span>
+            </button>
 
-          <button
-            type="button"
-            className={`admin-option-card ${activeTab === "edit" ? "active" : ""}`}
-            onClick={() => setActiveTab("edit")}
-          >
-            <div className="admin-option-icon">
-              <Edit3 size={22} />
-            </div>
-            <div className="admin-option-info">
-              <div className="admin-option-badge">OPTION 2</div>
-              <h3>প্রজেক্ট এডিট করা (Edit Projects)</h3>
-              <p>পূর্বের যেকোনো প্রজেক্টের তথ্য পরিবর্তন করুন, ছবি আপডেট করুন বা প্রজেক্ট মুছে ফেলুন ({projects.length} টি)।</p>
-            </div>
-          </button>
-        </section>
+            <button
+              type="button"
+              className={`admin-tab-item ${activeTab === "edit" ? "active" : ""}`}
+              onClick={() => setActiveTab("edit")}
+            >
+              <Edit3 size={15} />
+              <span>Edit Existing Projects</span>
+              <span className="admin-tab-pill">{projects.length}</span>
+            </button>
+          </div>
+        </div>
 
         {/* ------------------------------------------------------------- */}
-        {/* VIEW 1: OPTION 1 - ADD PROJECT (প্রজেক্ট অ্যাড করা) */}
+        {/* OPTION 1: ADD PROJECT FORM */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "add" && (
-          <section className="admin-section-pane animate-fade-in">
-            <div className="admin-pane-header">
-              <div className="admin-pane-title-group">
-                <div className="admin-pane-icon-badge add-badge">
-                  <Plus size={20} />
-                </div>
-                <div>
-                  <h2>নতুন প্রজেক্ট যুক্ত করুন (Add New Project)</h2>
-                  <p>নিচের ফর্মটি পূরণ করে "Save & Publish" বাটনে ক্লিক করলেই আপনার ওয়েবসাইটে শো করবে।</p>
-                </div>
+          <section className="admin-card-pane">
+            <div className="admin-pane-top">
+              <div>
+                <h2>Create Showcase Project</h2>
+                <p>Provide project details, screenshots, and links to publish directly to your portfolio.</p>
               </div>
 
               <button
                 type="button"
                 onClick={handleAddReset}
-                className="admin-btn-secondary"
-                title="Clear all fields"
+                className="admin-btn-ghost"
+                title="Reset all input fields"
               >
                 <RotateCcw size={14} />
-                <span>Reset Form</span>
+                <span>Reset</span>
               </button>
             </div>
 
-            <form onSubmit={handleAddSubmit} className="admin-form-card">
+            <form onSubmit={handleAddSubmit} className="admin-form-grid">
               {/* Row 1: Title & Category */}
-              <div className="admin-form-row">
-                <div className="admin-form-group">
-                  <label>Project Title <span className="req-star">*</span></label>
+              <div className="admin-two-col">
+                <div className="admin-input-group">
+                  <label>Project Title <span className="admin-required">*</span></label>
                   <input
                     type="text"
                     required
@@ -383,8 +371,8 @@ export default function AdminDashboard() {
                   />
                 </div>
 
-                <div className="admin-form-group">
-                  <label>Category <span className="req-star">*</span></label>
+                <div className="admin-input-group">
+                  <label>Category <span className="admin-required">*</span></label>
                   <select
                     value={addForm.category}
                     onChange={(e) => setAddForm({ ...addForm, category: e.target.value })}
@@ -399,31 +387,31 @@ export default function AdminDashboard() {
               </div>
 
               {/* Row 2: Description */}
-              <div className="admin-form-group">
+              <div className="admin-input-group">
                 <label>Project Description</label>
                 <textarea
                   rows={3}
-                  placeholder="Describe what the project does, key features, business impact, and how it was built..."
+                  placeholder="Describe the problem solved, architecture overview, and core functionality..."
                   value={addForm.description}
                   onChange={(e) => setAddForm({ ...addForm, description: e.target.value })}
                 />
               </div>
 
               {/* Row 3: Tech Stack Tags */}
-              <div className="admin-form-group">
+              <div className="admin-input-group">
                 <label>Tech Stack Tags (Comma separated)</label>
                 <input
                   type="text"
-                  placeholder="React, Node.js, Python, OpenAI API, Cloudflare Workers, TailwindCSS"
+                  placeholder="React, Next.js, Python, OpenAI, Cloudflare, PostgreSQL"
                   value={addForm.tags}
                   onChange={(e) => setAddForm({ ...addForm, tags: e.target.value })}
                 />
                 {addForm.tags && (
-                  <div className="admin-tags-preview">
+                  <div className="admin-tag-preview-bar">
                     {addForm.tags.split(",").map((t, idx) => {
                       const trimmed = t.trim();
                       return trimmed ? (
-                        <span key={idx} className="admin-tag-pill">
+                        <span key={idx} className="admin-preview-pill">
                           {trimmed}
                         </span>
                       ) : null;
@@ -433,61 +421,68 @@ export default function AdminDashboard() {
               </div>
 
               {/* Row 4: Live URL & GitHub URL */}
-              <div className="admin-form-row">
-                <div className="admin-form-group">
+              <div className="admin-two-col">
+                <div className="admin-input-group">
                   <label>Live Website URL</label>
-                  <input
-                    type="url"
-                    placeholder="https://myproject.com"
-                    value={addForm.live}
-                    onChange={(e) => setAddForm({ ...addForm, live: e.target.value })}
-                  />
+                  <div className="admin-icon-field">
+                    <Globe size={15} className="field-icon" />
+                    <input
+                      type="url"
+                      placeholder="https://example.com"
+                      value={addForm.live}
+                      onChange={(e) => setAddForm({ ...addForm, live: e.target.value })}
+                    />
+                  </div>
                 </div>
-                <div className="admin-form-group">
+
+                <div className="admin-input-group">
                   <label>GitHub Repository URL</label>
-                  <input
-                    type="url"
-                    placeholder="https://github.com/ClearVision2k1/my-repo"
-                    value={addForm.github}
-                    onChange={(e) => setAddForm({ ...addForm, github: e.target.value })}
-                  />
+                  <div className="admin-icon-field">
+                    <Code2 size={15} className="field-icon" />
+                    <input
+                      type="url"
+                      placeholder="https://github.com/username/project"
+                      value={addForm.github}
+                      onChange={(e) => setAddForm({ ...addForm, github: e.target.value })}
+                    />
+                  </div>
                 </div>
               </div>
 
               {/* Row 5: Screenshot / Image Upload with Auto-compression */}
-              <div className="admin-form-group">
-                <label>Project Screenshot / Image</label>
-                <div className="admin-upload-zone">
+              <div className="admin-input-group">
+                <label>Project Screenshot / Cover</label>
+                <div className="admin-dropzone-wrap">
                   <input
                     type="file"
                     accept="image/*"
-                    id="add-project-image-input"
+                    id="add-image-file"
                     onChange={handleAddImageChange}
                     style={{ display: "none" }}
                   />
-                  <label htmlFor="add-project-image-input" className="admin-upload-label">
-                    <Upload size={22} color="#c2a4ff" />
+                  <label htmlFor="add-image-file" className="admin-dropzone">
+                    <Upload size={22} color="#a87cff" />
                     <div>
-                      <span className="upload-main-text">
-                        {addCompressing ? "Compressing image for Cloudflare D1..." : "Click or Drag to Upload Project Image"}
-                      </span>
-                      <span className="upload-sub-text">
-                        Auto-compressed into high quality lightweight WebP format (&lt; 100KB)
-                      </span>
+                      <p className="dropzone-title">
+                        {addCompressing ? "Compressing image for Cloudflare D1..." : "Click to browse or drop screenshot here"}
+                      </p>
+                      <p className="dropzone-subtitle">
+                        Automatically compressed to high-res WebP (&lt; 100KB) for direct D1 storage.
+                      </p>
                     </div>
                   </label>
 
                   {addImagePreview && (
-                    <div className="admin-preview-box">
-                      <img src={addImagePreview} alt="Preview" />
+                    <div className="admin-image-display">
+                      <img src={addImagePreview} alt="Project Preview" />
                       <button
                         type="button"
                         onClick={() => {
                           setAddImagePreview("");
                           setAddForm({ ...addForm, image: "" });
                         }}
-                        className="admin-remove-img-btn"
-                        title="Remove Image"
+                        className="admin-image-delete-btn"
+                        title="Remove image"
                       >
                         <X size={14} />
                         <span>Remove</span>
@@ -497,15 +492,15 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Submit Buttons */}
-              <div className="admin-form-actions">
+              {/* Action Buttons */}
+              <div className="admin-submit-row">
                 <button
                   type="submit"
                   disabled={addSaving || addCompressing}
-                  className="admin-btn-primary admin-submit-large"
+                  className="admin-btn-action"
                 >
-                  <Plus size={18} />
-                  <span>{addSaving ? "Publishing to D1..." : "Save & Publish Project"}</span>
+                  <Plus size={16} />
+                  <span>{addSaving ? "Publishing to D1..." : "Publish Project"}</span>
                 </button>
               </div>
             </form>
@@ -513,39 +508,33 @@ export default function AdminDashboard() {
         )}
 
         {/* ------------------------------------------------------------- */}
-        {/* VIEW 2: OPTION 2 - EDIT PROJECT (প্রজেক্ট এডিট করা) */}
+        {/* OPTION 2: EDIT & MANAGE PROJECTS */}
         {/* ------------------------------------------------------------- */}
         {activeTab === "edit" && (
-          <section className="admin-section-pane animate-fade-in">
-            <div className="admin-pane-header">
-              <div className="admin-pane-title-group">
-                <div className="admin-pane-icon-badge edit-badge">
-                  <Edit3 size={20} />
-                </div>
-                <div>
-                  <h2>প্রজেক্ট এডিট ও পরিবর্তন করুন (Edit Projects)</h2>
-                  <p>যেকোনো প্রজেক্টের "Edit Project" বাটনে ক্লিক করে তথ্য বা ছবি পরিবর্তন করুন।</p>
-                </div>
+          <section className="admin-card-pane">
+            <div className="admin-pane-top">
+              <div>
+                <h2>Manage Showcase Projects</h2>
+                <p>Select any project below to update details, replace screenshots, or delete from portfolio.</p>
               </div>
 
-              {/* Quick Jump to Add */}
               <button
                 type="button"
                 onClick={() => setActiveTab("add")}
-                className="admin-btn-primary"
+                className="admin-btn-action admin-btn-action-sm"
               >
-                <Plus size={16} />
+                <Plus size={15} />
                 <span>Add Another Project</span>
               </button>
             </div>
 
             {/* Filter and Search Bar */}
-            <div className="admin-filter-bar">
-              <div className="admin-search-wrap">
-                <Search size={16} className="search-icon" />
+            <div className="admin-search-row">
+              <div className="admin-search-box">
+                <Search size={15} className="search-icon" />
                 <input
                   type="text"
-                  placeholder="Search projects by title, description, or tech stack..."
+                  placeholder="Search by title, description, or tech stack..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -553,15 +542,15 @@ export default function AdminDashboard() {
                   <button
                     type="button"
                     onClick={() => setSearchQuery("")}
-                    className="clear-search-btn"
+                    className="search-clear-btn"
                   >
                     <X size={14} />
                   </button>
                 )}
               </div>
 
-              <div className="admin-category-filter">
-                <Filter size={15} color="#c2a4ff" />
+              <div className="admin-select-wrapper">
+                <Filter size={14} color="#a87cff" />
                 <select
                   value={categoryFilter}
                   onChange={(e) => setCategoryFilter(e.target.value)}
@@ -579,15 +568,15 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            {/* Projects Grid for Editing */}
+            {/* Projects Grid */}
             {loading ? (
-              <div className="admin-loading-state">
+              <div className="admin-state-box">
                 <div className="admin-spinner" />
                 <span>Loading projects from Cloudflare D1...</span>
               </div>
             ) : filteredProjects.length === 0 ? (
-              <div className="admin-empty-state">
-                <ImageIcon size={48} color="rgba(255,255,255,0.2)" />
+              <div className="admin-state-box">
+                <ImageIcon size={44} color="rgba(255,255,255,0.2)" />
                 <p>No matching projects found.</p>
                 {searchQuery || categoryFilter !== "all" ? (
                   <button
@@ -596,65 +585,65 @@ export default function AdminDashboard() {
                       setSearchQuery("");
                       setCategoryFilter("all");
                     }}
-                    className="admin-btn-secondary"
+                    className="admin-btn-ghost"
                   >
-                    Clear Search Filters
+                    Clear Filters
                   </button>
                 ) : (
                   <button
                     type="button"
                     onClick={() => setActiveTab("add")}
-                    className="admin-btn-primary"
+                    className="admin-btn-action"
                   >
-                    <Plus size={16} />
-                    <span>Add Your First Project</span>
+                    <Plus size={15} />
+                    <span>Create Your First Project</span>
                   </button>
                 )}
               </div>
             ) : (
-              <div className="admin-projects-grid">
+              <div className="admin-cards-grid">
                 {filteredProjects.map((project, idx) => (
-                  <div key={project.id || idx} className="admin-project-card">
-                    {/* Card Thumbnail */}
-                    <div className="admin-card-thumb">
+                  <div key={project.id || idx} className="admin-item-card">
+                    {/* Thumbnail */}
+                    <div className="admin-item-media">
                       {project.image ? (
                         <img src={project.image} alt={project.title} />
                       ) : (
-                        <div className="admin-card-no-img">No Image Provided</div>
+                        <div className="admin-item-empty-img">No Image Provided</div>
                       )}
-                      <span className="admin-card-category">{project.category}</span>
+                      <span className="admin-item-tag">{project.category}</span>
                     </div>
 
-                    {/* Card Body */}
-                    <div className="admin-card-body">
+                    {/* Card Content */}
+                    <div className="admin-item-content">
                       <h3>{project.title}</h3>
-                      <p className="admin-card-desc">{project.description}</p>
+                      <p className="admin-item-desc">{project.description}</p>
 
-                      {/* Tech Tags */}
-                      <div className="admin-card-tags">
+                      {/* Tags */}
+                      <div className="admin-item-pills">
                         {(Array.isArray(project.tags)
                           ? project.tags
                           : (project.tags || "").split(",")
                         )
                           .slice(0, 4)
                           .map((tag, tIdx) => (
-                            <span key={tIdx} className="admin-tag-pill">
+                            <span key={tIdx} className="admin-mini-pill">
                               {tag.trim()}
                             </span>
                           ))}
                       </div>
 
                       {/* Links */}
-                      <div className="admin-card-links">
+                      <div className="admin-item-links">
                         {(project.live || project.link) && (
                           <a
                             href={project.live || project.link}
                             target="_blank"
                             rel="noreferrer"
-                            className="admin-link-btn"
+                            className="admin-link-chip"
                             title="Open Live Preview"
                           >
-                            <ExternalLink size={14} />
+                            <ExternalLink size={13} />
                             <span>Live</span>
                           </a>
                         )}
@@ -663,32 +652,32 @@ export default function AdminDashboard() {
                             href={project.github}
                             target="_blank"
                             rel="noreferrer"
-                            className="admin-link-btn"
+                            className="admin-link-chip"
                             title="View Source on GitHub"
                           >
-                            <Github size={14} />
-                            <span>Repo</span>
+                            <Github size={13} />
+                            <span>GitHub</span>
                           </a>
                         )}
                       </div>
                     </div>
 
-                    {/* Actions Bar: Prominent Edit and Delete */}
-                    <div className="admin-card-actions">
+                    {/* Actions: Edit & Delete */}
+                    <div className="admin-item-actions">
                       <button
                         onClick={() => handleOpenEdit(project)}
-                        className="admin-action-btn admin-edit-btn"
+                        className="admin-act-btn admin-act-edit"
                         title="Edit this project"
                       >
-                        <Edit3 size={15} />
-                        <span>Edit Project</span>
+                        <Edit3 size={14} />
+                        <span>Edit</span>
                       </button>
                       <button
                         onClick={() => handleDelete(project.id, project.title)}
-                        className="admin-action-btn admin-del-btn"
+                        className="admin-act-btn admin-act-del"
                         title="Delete project"
                       >
-                        <Trash2 size={15} />
+                        <Trash2 size={14} />
                         <span>Delete</span>
                       </button>
                     </div>
@@ -701,36 +690,34 @@ export default function AdminDashboard() {
       </main>
 
       {/* ------------------------------------------------------------- */}
-      {/* EDIT PROJECT MODAL (Triggered from Option 2) */}
+      {/* EDIT MODAL */}
       {/* ------------------------------------------------------------- */}
       {editingProject && editForm && (
         <div className="admin-modal-overlay" onClick={handleCloseEdit}>
-          <div className="admin-editor-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="admin-editor-header">
-              <div className="admin-editor-header-title">
-                <Edit3 size={20} color="#c2a4ff" />
-                <h2>প্রজেক্ট এডিট করুন (Edit Project)</h2>
+          <div className="admin-modal-window" onClick={(e) => e.stopPropagation()}>
+            <div className="admin-modal-window-header">
+              <div className="admin-modal-window-title">
+                <Edit3 size={18} color="#a87cff" />
+                <h3>Edit Project</h3>
               </div>
-              <button onClick={handleCloseEdit} className="admin-modal-close" title="Close">
-                <X size={18} />
+              <button onClick={handleCloseEdit} className="admin-window-close" title="Close">
+                <X size={16} />
               </button>
             </div>
 
-            <form onSubmit={handleEditSubmit} className="admin-editor-form">
-              {/* Row 1: Title & Category */}
-              <div className="admin-form-row">
-                <div className="admin-form-group">
-                  <label>Project Title <span className="req-star">*</span></label>
+            <form onSubmit={handleEditSubmit} className="admin-form-grid">
+              <div className="admin-two-col">
+                <div className="admin-input-group">
+                  <label>Project Title <span className="admin-required">*</span></label>
                   <input
                     type="text"
                     required
-                    placeholder="Project Title"
                     value={editForm.title}
                     onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
                   />
                 </div>
-                <div className="admin-form-group">
-                  <label>Category <span className="req-star">*</span></label>
+                <div className="admin-input-group">
+                  <label>Category <span className="admin-required">*</span></label>
                   <select
                     value={editForm.category}
                     onChange={(e) => setEditForm({ ...editForm, category: e.target.value })}
@@ -744,72 +731,64 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Row 2: Description */}
-              <div className="admin-form-group">
-                <label>Project Description</label>
+              <div className="admin-input-group">
+                <label>Description</label>
                 <textarea
                   rows={3}
-                  placeholder="Describe the solution, impact, and features..."
                   value={editForm.description}
                   onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
                 />
               </div>
 
-              {/* Row 3: Tags */}
-              <div className="admin-form-group">
+              <div className="admin-input-group">
                 <label>Tech Stack Tags (Comma separated)</label>
                 <input
                   type="text"
-                  placeholder="React, Node.js, Python, PostgreSQL"
                   value={editForm.tags}
                   onChange={(e) => setEditForm({ ...editForm, tags: e.target.value })}
                 />
               </div>
 
-              {/* Row 4: Live & Github Links */}
-              <div className="admin-form-row">
-                <div className="admin-form-group">
+              <div className="admin-two-col">
+                <div className="admin-input-group">
                   <label>Live URL</label>
                   <input
                     type="url"
-                    placeholder="https://example.com"
                     value={editForm.live}
                     onChange={(e) => setEditForm({ ...editForm, live: e.target.value })}
                   />
                 </div>
-                <div className="admin-form-group">
-                  <label>GitHub Repository URL</label>
+                <div className="admin-input-group">
+                  <label>GitHub URL</label>
                   <input
                     type="url"
-                    placeholder="https://github.com/..."
                     value={editForm.github}
                     onChange={(e) => setEditForm({ ...editForm, github: e.target.value })}
                   />
                 </div>
               </div>
 
-              {/* Row 5: Image Upload with Canvas Auto-compression */}
-              <div className="admin-form-group">
-                <label>Replace / Update Project Screenshot</label>
-                <div className="admin-upload-zone">
+              <div className="admin-input-group">
+                <label>Replace Screenshot / Cover</label>
+                <div className="admin-dropzone-wrap">
                   <input
                     type="file"
                     accept="image/*"
-                    id="edit-project-image-input"
+                    id="edit-image-file"
                     onChange={handleEditImageChange}
                     style={{ display: "none" }}
                   />
-                  <label htmlFor="edit-project-image-input" className="admin-upload-label">
-                    <Upload size={20} color="#c2a4ff" />
+                  <label htmlFor="edit-image-file" className="admin-dropzone">
+                    <Upload size={18} color="#a87cff" />
                     <span>
                       {editCompressing
                         ? "Compressing new image..."
-                        : "Click to upload replacement image"}
+                        : "Click to upload replacement image (WebP Auto-optimized)"}
                     </span>
                   </label>
 
                   {editImagePreview && (
-                    <div className="admin-preview-box">
+                    <div className="admin-image-display">
                       <img src={editImagePreview} alt="Preview" />
                       <button
                         type="button"
@@ -817,7 +796,7 @@ export default function AdminDashboard() {
                           setEditImagePreview("");
                           setEditForm({ ...editForm, image: "" });
                         }}
-                        className="admin-remove-img-btn"
+                        className="admin-image-delete-btn"
                         title="Remove Image"
                       >
                         <X size={14} />
@@ -828,17 +807,16 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="admin-editor-actions">
-                <button type="button" onClick={handleCloseEdit} className="admin-btn-secondary">
+              <div className="admin-modal-footer">
+                <button type="button" onClick={handleCloseEdit} className="admin-btn-ghost">
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={editSaving || editCompressing}
-                  className="admin-btn-primary"
+                  className="admin-btn-action"
                 >
-                  {editSaving ? "Saving to D1..." : "Update Project"}
+                  {editSaving ? "Saving to D1..." : "Save Changes"}
                 </button>
               </div>
             </form>

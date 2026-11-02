@@ -23,6 +23,9 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
+  const isAdmin = pathname.startsWith("/admin");
+
   // Initialize Lenis smooth scroll
   useLenis();
 
@@ -37,9 +40,9 @@ export default function App() {
       {/* Scroll restoration helper */}
       <ScrollToTop />
 
-      {/* Persistent desktop social bar and 90-degree resume button */}
-      <SocialSidebar />
-      <ResumeButton />
+      {/* Persistent desktop social bar and 90-degree resume button (hidden on /admin) */}
+      {!isAdmin && <SocialSidebar />}
+      {!isAdmin && <ResumeButton />}
 
       {/* Application Routing */}
       <Routes>
