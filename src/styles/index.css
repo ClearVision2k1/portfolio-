@@ -820,6 +820,10 @@ li:hover .hover-in {
   word-spacing: 2px;
 }
 
+.about-me p + p {
+  margin-top: 18px;
+}
+
 @media only screen and (min-width: 600px) {
   .about-section {
     justify-content: center;
@@ -872,6 +876,9 @@ li:hover .hover-in {
   .about-me p {
     font-size: 1.9vw;
     line-height: 2.3vw;
+  }
+  .about-me p + p {
+    margin-top: 1.2vw;
   }
 }
 

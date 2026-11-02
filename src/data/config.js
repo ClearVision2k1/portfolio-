@@ -28,8 +28,12 @@ export const config = {
   about: {
     title: "About Me",
     heading: "Bridging the gap between intelligent AI systems and modern web architectures.",
+    paragraphs: [
+      "I am Eliyas Hasan, a Web Developer & AI Automation Specialist from Bangladesh. I specialize in building modern websites, web applications, and intelligent automation solutions that help businesses streamline operations and solve real-world problems.",
+      "My expertise includes frontend and backend development, API integration, AI-powered workflows, chatbots, and business process automation. I combine creative problem-solving with modern technologies to build practical, efficient, and user-focused digital solutions.",
+    ],
     description:
-      "I am Eliyas Hasan, a Full-Stack Web Developer and AI Automation Expert from Bangladesh. I specialize in engineering scalable web platforms, automated workflow agents, and sleek interactive frontends. My engineering philosophy combines algorithmic efficiency, modern aesthetics, and relentless problem solving.",
+      "I am Eliyas Hasan, a Web Developer & AI Automation Specialist from Bangladesh. I specialize in building modern websites, web applications, and intelligent automation solutions that help businesses streamline operations and solve real-world problems.\n\nMy expertise includes frontend and backend development, API integration, AI-powered workflows, chatbots, and business process automation. I combine creative problem-solving with modern technologies to build practical, efficient, and user-focused digital solutions.",
   },
 
   skills: {
