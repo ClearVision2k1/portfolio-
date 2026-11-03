@@ -10,7 +10,7 @@ export default function Contact() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: ".contact-section",
-        start: "top 80%",
+        start: "top 90%",
         end: "bottom center",
         toggleActions: "play none none none",
       },
@@ -18,14 +18,14 @@ export default function Contact() {
 
     tl.fromTo(
       ".contact-section h3",
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+      { opacity: 0, y: 35 },
+      { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }
     );
     tl.fromTo(
       ".contact-box",
-      { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: "power3.out" },
-      "-=0.4"
+      { opacity: 0, y: 35 },
+      { opacity: 1, y: 0, duration: 0.6, stagger: 0.12, ease: "power3.out" },
+      "-=0.3"
     );
 
     return () => tl.kill();
@@ -106,6 +106,17 @@ export default function Contact() {
               >
                 Facebook &#8599;
               </a>
+              {config.developer.resumeUrl && (
+                <a
+                  href={config.developer.resumeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="disable"
+                  className="contact-social"
+                >
+                  Resume &#8599;
+                </a>
+              )}
             </div>
 
             {/* Col 3: Attribution & Copyright */}
