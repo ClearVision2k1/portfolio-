@@ -2016,12 +2016,13 @@ a.contact-social:hover {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
 }
 
 @media only screen and (min-width: 900px) {
   .contact-author-box {
-    margin-top: -95px;
+    margin-top: -125px;
   }
 }
 
@@ -2030,7 +2031,7 @@ a.contact-social:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 30px;
   width: fit-content;
 }
 
@@ -2102,6 +2103,11 @@ a.contact-social:hover {
   color: #eae5ec;
 }
 
+.contact-author-box h2 {
+  text-align: center;
+  width: 100%;
+}
+
 .contact-box h2 > span {
   color: var(--accentColor);
 }
@@ -2115,6 +2121,12 @@ a.contact-social:hover {
   opacity: 0.5;
   margin-top: 8px;
   color: #eae5ec;
+}
+
+.contact-author-box h5 {
+  justify-content: center;
+  text-align: center;
+  width: 100%;
 }
 
 @media only screen and (min-width: 600px) {
