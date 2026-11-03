@@ -7,12 +7,11 @@ export default function LoadingScreen({ onComplete }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isExited, setIsExited] = useState(false);
 
-  // Ultra-fast millisecond percentage count-up (under 1 second)
+  // Smooth, rhythmic count-up (around 700-900ms)
   useEffect(() => {
     let current = 0;
     const interval = setInterval(() => {
-      // Step increment between 3 and 7 for a rapid, cybernetic count-up in ~350-450ms
-      const step = Math.floor(Math.random() * 5) + 3;
+      const step = Math.floor(Math.random() * 4) + 2;
       current += step;
       if (current >= 100) {
         current = 100;
@@ -21,7 +20,7 @@ export default function LoadingScreen({ onComplete }) {
       } else {
         setPercent(current);
       }
-    }, 16); // 16ms (~60fps frame rate) for lightning-fast millisecond count
+    }, 20);
 
     window.__skipLoader = () => {
       setIsExited(true);
@@ -34,21 +33,21 @@ export default function LoadingScreen({ onComplete }) {
     };
   }, []);
 
-  // When 100% reached, quickly flash "WELCOME" and smoothly expand
+  // When 100% reached, display "WELCOME" proudly, then smoothly transition into portfolio
   useEffect(() => {
     if (percent >= 100) {
       const t1 = setTimeout(() => {
-        setIsComplete(true); // Switches "LOADING" -> "WELCOME"
-      }, 150);
+        setIsComplete(true); // Switches to "WELCOME"
+      }, 100);
 
       const t2 = setTimeout(() => {
-        setIsExpanded(true); // Pill smoothly expands to open into portfolio
-      }, 450);
+        setIsExpanded(true); // Smooth fade / reveal
+      }, 900);
 
       const t3 = setTimeout(() => {
         setIsExited(true);
         if (onComplete) onComplete();
-      }, 800);
+      }, 1400);
 
       return () => {
         clearTimeout(t1);
@@ -68,9 +67,11 @@ export default function LoadingScreen({ onComplete }) {
   };
 
   const handleClick = () => {
-    // Instant skip to 100% on click if user clicks the button
     if (percent < 100) {
       setPercent(100);
+    } else {
+      setIsExited(true);
+      if (onComplete) onComplete();
     }
   };
 
@@ -80,7 +81,14 @@ export default function LoadingScreen({ onComplete }) {
   const role2 = "FULL-STACK WEB DEVELOPER";
 
   return (
-    <div className={`loading-screen ${isExited ? "loading-screen-hidden" : ""}`}>
+    <div
+      className={`loading-screen ${isExited ? "loading-screen-hidden" : ""} ${
+        isExpanded ? "loading-screen-expanded" : ""
+      }`}
+    >
+      {/* Background Ambient Glows */}
+      <div className="loader-ambient-glow" />
+
       {/* Top Header Bar */}
       <div className="loading-header">
         <a href="/#" className="loader-title" data-cursor="disable">
@@ -114,25 +122,51 @@ export default function LoadingScreen({ onComplete }) {
         </div>
       </div>
 
-      {/* Center Floating Pill / Capsule */}
-      <div
-        className={`loading-wrap ${isExpanded ? "loading-clicked" : ""}`}
-        onMouseMove={handleMouseMove}
-        onClick={handleClick}
-        data-cursor="disable"
-      >
-        <div className="loading-hover" />
-        <div className={`loading-button ${isComplete ? "loading-complete" : ""}`}>
-          <div className="loading-container">
-            <div className="loading-content">
-              <div className="loading-content-in">
-                LOADING <span>{percent}%</span>
-                <span className="loading-box" />
+      {/* Center Welcome Container: Photo on TOP (Upore), Text DOWNWARDS (Nicher dike) */}
+      <div className="loader-center-content">
+        {/* Upore: Eliyas's Photo */}
+        <div className="loader-avatar-wrapper">
+          <div className="loader-avatar-ring-pulse" />
+          <div className="loader-avatar-frame">
+            <img
+              src={config.developer.photo || "/images/eliyas.png"}
+              alt={config.developer.fullName}
+              className="loader-avatar-img"
+              onError={(e) => {
+                e.target.src = "/images/eliyas-avatar.png";
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Nicher dike: Text & Capsule Button */}
+        <div className="loader-info-group">
+          <h2 className="loader-developer-name">{config.developer.fullName}</h2>
+          <p className="loader-developer-role">
+            {config.developer.title} • {config.developer.secondaryTitle}
+          </p>
+
+          {/* Interactive Floating Capsule */}
+          <div
+            className={`loading-wrap ${isExpanded ? "loading-clicked" : ""}`}
+            onMouseMove={handleMouseMove}
+            onClick={handleClick}
+            data-cursor="disable"
+          >
+            <div className="loading-hover" />
+            <div className={`loading-button ${isComplete ? "loading-complete" : ""}`}>
+              <div className="loading-container">
+                <div className="loading-content">
+                  <div className="loading-content-in">
+                    LOADING <span>{percent}%</span>
+                    <span className="loading-box" />
+                  </div>
+                </div>
+              </div>
+              <div className="loading-content2">
+                <span>WELCOME</span>
               </div>
             </div>
-          </div>
-          <div className="loading-content2">
-            <span>WELCOME</span>
           </div>
         </div>
       </div>

@@ -2137,7 +2137,8 @@ a.contact-social:hover {
 }
 
 /* ========================================================
-   AUTHENTIC PRE-LOADER & ENTRANCE (REDOYANULHAQUE.ME)
+/* ========================================================
+   AUTHENTIC PRE-LOADER & ENTRANCE (DARK THEME WITH PHOTO)
 ======================================================== */
 .loading-screen {
   position: fixed;
@@ -2146,18 +2147,38 @@ a.contact-social:hover {
   width: 100vw;
   height: 100vh;
   height: var(--vh, 100vh);
-  background-color: #eae5ec;
+  background-color: #08060b;
+  background-image: 
+    radial-gradient(circle at 50% 50%, rgba(168, 124, 255, 0.12) 0%, transparent 65%),
+    radial-gradient(circle at 80% 20%, rgba(120, 80, 220, 0.08) 0%, transparent 40%);
   z-index: 999999999;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loading-screen-expanded {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
 }
 
 .loading-screen-hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+.loader-ambient-glow {
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 124, 255, 0.14) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .main-hidden {
@@ -2183,16 +2204,17 @@ a.contact-social:hover {
   left: 50%;
   transform: translate(-50%);
   top: 0;
-  color: var(--backgroundColor, #0b080c);
+  color: #ffffff;
 }
 
 .loader-title {
   font-weight: 700;
   font-size: 16px;
-  letter-spacing: 0.2px;
-  color: #0b080c;
+  letter-spacing: 0.5px;
+  color: #ffffff;
   text-decoration: none;
   font-family: Geist, sans-serif;
+  text-shadow: 0 0 15px rgba(168, 124, 255, 0.4);
 }
 
 @media only screen and (min-width: 1200px) {
@@ -2235,8 +2257,9 @@ a.contact-social:hover {
   position: relative;
   width: 10px;
   height: 60px;
-  background-color: #000;
+  background-color: rgba(255, 255, 255, 0.65);
   display: block;
+  border-radius: 4px;
 }
 
 .loaderGame-line:nth-child(2n) {
@@ -2252,6 +2275,7 @@ a.contact-social:hover {
   height: 15px;
   border-radius: 50%;
   background-color: #a87cff;
+  box-shadow: 0 0 12px #a87cff;
   animation: ball25 7s infinite;
   transform: translateY(10px);
   animation-timing-function: cubic-bezier(0.3, 1.18, 0.63, 1.28);
@@ -2268,16 +2292,17 @@ a.contact-social:hover {
   to { transform: translateY(70px); }
 }
 
-/* Moving Big Typography Marquee */
+/* Moving Cyberpunk Typography Marquee */
 .loading-marquee {
   position: absolute;
   top: 50%;
   left: 0;
   width: 100%;
   transform: translateY(-50%);
-  color: #0b080c;
-  font-size: 60px;
-  font-weight: 700;
+  color: rgba(255, 255, 255, 0.025);
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.07);
+  font-size: 70px;
+  font-weight: 800;
   text-transform: uppercase;
   white-space: nowrap;
   overflow: hidden;
@@ -2285,12 +2310,13 @@ a.contact-social:hover {
   user-select: none;
   font-family: Geist, sans-serif;
   letter-spacing: -1px;
+  z-index: 2;
 }
 
 .loading-marquee-track {
   display: flex;
   width: max-content;
-  animation: loadingMarquee 25s linear infinite;
+  animation: loadingMarquee 28s linear infinite;
 }
 
 @keyframes loadingMarquee {
@@ -2302,59 +2328,177 @@ a.contact-social:hover {
   padding: 0 40px;
   position: relative;
   display: inline-block;
-  opacity: 0.95;
 }
 
 .loading-marquee span:before {
   content: "";
-  width: 18px;
-  height: 18px;
-  background-color: #0b080c;
+  width: 14px;
+  height: 14px;
+  background-color: #a87cff;
+  box-shadow: 0 0 15px rgba(168, 124, 255, 0.6);
   position: absolute;
   top: 50%;
   border-radius: 50px;
   left: 0;
   transform: translate(-50%, -50%);
+  opacity: 0.45;
 }
 
 @media only screen and (min-width: 1400px) {
   .loading-marquee {
-    font-size: 95px;
+    font-size: 110px;
+  }
+}
+
+/* ========================================================
+   CENTER WELCOME HERO: PHOTO ON TOP, TEXT BELOW
+======================================================== */
+.loader-center-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+  animation: loaderFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes loaderFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Avatar on TOP (Upore) */
+.loader-avatar-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.loader-avatar-ring-pulse {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  border: 2px solid rgba(168, 124, 255, 0.35);
+  box-shadow: 0 0 35px rgba(168, 124, 255, 0.25);
+  animation: avatarPulse 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes avatarPulse {
+  0%, 100% {
+    transform: scale(0.97);
+    opacity: 0.5;
+    border-color: rgba(168, 124, 255, 0.25);
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+    border-color: rgba(168, 124, 255, 0.6);
+    box-shadow: 0 0 45px rgba(168, 124, 255, 0.45);
+  }
+}
+
+.loader-avatar-frame {
+  width: 114px;
+  height: 114px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2.5px solid rgba(168, 124, 255, 0.7);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(168, 124, 255, 0.3);
+  background: radial-gradient(circle, rgba(168, 124, 255, 0.2) 0%, rgba(15, 10, 22, 0.95) 100%);
+  position: relative;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.loader-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+/* Info Group Below (Nicher Dike) */
+.loader-info-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.loader-developer-name {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  margin: 0;
+  font-family: Geist, sans-serif;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.loader-developer-role {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.8px;
+  color: rgba(168, 124, 255, 0.85);
+  margin: 0 0 12px 0;
+  font-family: Geist, sans-serif;
+  text-transform: uppercase;
+}
+
+@media only screen and (min-width: 768px) {
+  .loader-avatar-ring-pulse {
+    width: 155px;
+    height: 155px;
+  }
+  .loader-avatar-frame {
+    width: 126px;
+    height: 126px;
+  }
+  .loader-developer-name {
+    font-size: 26px;
+  }
+  .loader-developer-role {
+    font-size: 14px;
+    margin-bottom: 16px;
   }
 }
 
 /* Center Floating Pill / Capsule */
 .loading-wrap {
-  --Lsize: 160px;
-  padding: 6px;
+  --Lsize: 180px;
+  padding: 3px;
   position: relative;
   min-width: 0px;
   min-height: 0px;
   border-radius: 100px;
-  background-color: #000;
+  background: linear-gradient(135deg, rgba(168, 124, 255, 0.5), rgba(255, 255, 255, 0.1));
   overflow: hidden;
-  transition: 0.45s cubic-bezier(0.65, 0, 0.35, 1);
-  transition-delay: 0s;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(168, 124, 255, 0.25);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 10;
   cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.loading-clicked {
-  transition-delay: 0ms;
-  transition-timing-function: cubic-bezier(0.33, 0.11, 1, 0.72);
-  transform: scale(1);
-  min-width: calc(100vw + 5000px);
-  border-radius: 5000px;
-  min-height: calc(100vh + 500px);
-  box-shadow: none;
-}
-
-.loading-clicked .loading-button {
-  overflow: visible;
+.loading-wrap:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 30px rgba(168, 124, 255, 0.4);
 }
 
 .loading-hover {
@@ -2366,9 +2510,9 @@ a.contact-social:hover {
   left: var(--mouse-x, 50%);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  filter: blur(30px);
-  opacity: 0.85;
-  transition: opacity 0.5s;
+  filter: blur(25px);
+  opacity: 0.7;
+  transition: opacity 0.4s;
   pointer-events: none;
 }
 
@@ -2376,32 +2520,28 @@ a.contact-social:hover {
   opacity: 1;
 }
 
-.loading-clicked:hover .loading-hover,
-.loading-clicked .loading-hover {
-  opacity: 0;
-}
-
 .loading-button {
-  padding: 20px 52px;
+  padding: 16px 44px;
   border-radius: 100px;
-  background-color: #000;
+  background-color: #0d0a14;
   overflow: hidden;
-  font-size: 17px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   position: relative;
   z-index: 9;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(168, 124, 255, 0.2);
 }
 
 @media only screen and (min-width: 1400px) {
   .loading-wrap {
-    --Lsize: 200px;
+    --Lsize: 210px;
   }
   .loading-button {
-    padding: 26px 70px;
-    font-size: 21px;
+    padding: 18px 52px;
+    font-size: 17px;
   }
 }
 
@@ -2409,16 +2549,15 @@ a.contact-social:hover {
   position: relative;
   width: 100%;
   max-width: var(--Lsize);
-  transition: 0.6s ease;
+  transition: 0.5s ease;
   z-index: 9;
 }
 
 .loading-content {
   position: relative;
-  background-color: #000;
   width: 100%;
   overflow: hidden;
-  transition: 0.6s;
+  transition: 0.5s;
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 1.5px;
@@ -2430,21 +2569,21 @@ a.contact-social:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .loading-content span {
-  font-weight: 400;
-  opacity: 0.85;
-  color: #fff;
+  font-weight: 500;
+  opacity: 0.95;
+  color: #a87cff;
   font-variant-numeric: tabular-nums;
 }
 
 .loading-box {
   display: inline-block;
-  width: 10px;
-  height: 20px;
-  background-color: #fff;
+  width: 8px;
+  height: 16px;
+  background-color: #a87cff;
   animation: blink 1s linear infinite;
   vertical-align: middle;
 }
@@ -2465,7 +2604,7 @@ a.contact-social:hover {
 
 .loading-content2 {
   position: absolute;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   width: 100%;
   overflow: hidden;
@@ -2473,15 +2612,18 @@ a.contact-social:hover {
   justify-content: center;
   align-items: center;
   text-align: center;
-  transition: 0.8s ease;
-  color: #fff;
+  transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #ffffff;
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(168, 124, 255, 0.8);
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(20px);
 }
 
 .loading-complete .loading-container {
   opacity: 0;
-  transform: translateY(-30px);
+  transform: translateY(-20px);
+  pointer-events: none;
 }
 
 .loading-complete .loading-content2 {
