@@ -110,15 +110,18 @@ export default function Contact() {
 
             {/* Col 3: Attribution & Copyright */}
             <div className="contact-box contact-author-box">
-              <div className="footer-author-avatar">
-                <img
-                  src={config.developer.photo || "/images/eliyas.png"}
-                  alt={config.developer.fullName}
-                  loading="lazy"
-                  onError={(e) => {
-                    e.target.src = "/images/eliyas-avatar.png";
-                  }}
-                />
+              <div className="footer-avatar-wrapper">
+                <div className="footer-avatar-ring-pulse" />
+                <div className="footer-author-avatar">
+                  <img
+                    src={config.developer.photo || "/images/eliyas.png"}
+                    alt={config.developer.fullName}
+                    loading="lazy"
+                    onError={(e) => {
+                      e.target.src = "/images/eliyas-avatar.png";
+                    }}
+                  />
+                </div>
               </div>
               <h2>
                 Designed and Developed <br />
