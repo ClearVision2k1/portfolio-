@@ -96,7 +96,109 @@ export function logoutAdmin() {
 }
 
 /**
- * Fetch All Projects (D1 + config.js fallback)
+ * Format helper to ensure both link/live, tags/technologies, screenshots, and details are normalized
+ */
+export const normalizeProject = (p, defaultIdx = 0) => {
+  const tagsArray = Array.isArray(p.tags)
+    ? p.tags
+    : (typeof p.tags === "string" ? p.tags.split(",").map((t) => t.trim()).filter(Boolean) : (p.techStack || []));
+  const techString = p.technologies || (tagsArray.length > 0 ? tagsArray.join(" • ") : "");
+  const targetLink = p.link || p.live || p.github || "#";
+
+  let projectImage = p.image;
+  const defaultThumbnail = `/images/projects/project-${p.id || defaultIdx + 1}.webp`;
+  if (!projectImage || projectImage.includes("eliyas-photo.png") || projectImage === "/project-placeholder.webp") {
+    projectImage = defaultThumbnail;
+  }
+
+  // Normalize Screenshots (Ensure 3 showcase screenshots)
+  let screenshots = p.screenshots;
+  if (typeof screenshots === "string" && screenshots.startsWith("[")) {
+    try {
+      screenshots = JSON.parse(screenshots);
+    } catch (e) {
+      screenshots = [];
+    }
+  } else if (typeof screenshots === "string" && screenshots.includes(",")) {
+    screenshots = screenshots.split(",").map((s) => s.trim()).filter(Boolean);
+  }
+  const pid = p.id || defaultIdx + 1;
+  if (!Array.isArray(screenshots) || screenshots.length === 0) {
+    screenshots = [
+      `/images/projects/screens/project-${pid}-s1.webp`,
+      `/images/projects/screens/project-${pid}-s2.webp`,
+      `/images/projects/screens/project-${pid}-s3.webp`,
+    ];
+  } else {
+    // Ensure at least 3 items
+    while (screenshots.length < 3) {
+      screenshots.push(`/images/projects/screens/project-${pid}-s${screenshots.length + 1}.webp`);
+    }
+  }
+
+  // Normalize Features
+  let features = p.features;
+  if (typeof features === "string" && features.startsWith("[")) {
+    try {
+      features = JSON.parse(features);
+    } catch (e) {
+      features = features.split("\n").filter(Boolean);
+    }
+  } else if (typeof features === "string") {
+    features = features.split("\n").map((f) => f.trim().replace(/^[-•*]\s*/, "")).filter(Boolean);
+  }
+  if (!Array.isArray(features) || features.length === 0) {
+    features = [
+      "Engineered with scalable micro-architecture and high-throughput data processing.",
+      "Integrated modern API workflows, automated error handling, and structured schema validations.",
+      "Ultra-responsive interface with dark cyberpunk styling and seamless micro-interactions.",
+      "Production-ready deployment on modern cloud edge infrastructure with zero cold starts."
+    ];
+  }
+
+  const howBuilt = p.how_built || `This project was engineered by Eliyas Hasan to address complex workflow challenges and deliver high-impact digital experiences. Combining modern frontend frameworks with robust backend services and autonomous AI pipelines, the architecture guarantees fast load times, bulletproof data integrity, and intuitive user experiences.`;
+
+  return {
+    id: pid,
+    title: p.title || "Untitled Project",
+    category: p.category || "Full-Stack Web Development",
+    description: p.description || "",
+    technologies: techString,
+    tags: tagsArray,
+    image: projectImage,
+    screenshots: screenshots.slice(0, 3),
+    how_built: howBuilt,
+    features: features,
+    github: p.github || "",
+    live: p.live || p.link || "",
+    link: targetLink,
+    order_index: p.order_index !== undefined ? p.order_index : defaultIdx,
+    created_at: p.created_at || new Date().toISOString(),
+  };
+};
+
+/**
+ * Synchronous project getter from localStorage cache or config.projects fallback.
+ * Allows components to initialize immediately with zero layout shift or delay.
+ */
+export function getSynchronousProjects() {
+  let localProjects = null;
+  try {
+    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (stored !== null) {
+      localProjects = JSON.parse(stored);
+    }
+  } catch (e) {}
+
+  if (Array.isArray(localProjects)) {
+    return localProjects.map((p, idx) => normalizeProject(p, idx));
+  }
+
+  return config.projects.map((p, idx) => normalizeProject(p, idx));
+}
+
+/**
+ * Fetch All Projects (D1 + LocalStorage/config.js fallback)
  */
 export async function getAllProjects() {
   let d1Projects = [];
@@ -115,105 +217,11 @@ export async function getAllProjects() {
     console.warn("Could not fetch from /api/projects:", err);
   }
 
-  // Check local storage custom projects
-  let localProjects = [];
-  try {
-    const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (stored) {
-      localProjects = JSON.parse(stored);
-    }
-  } catch (e) {}
-
-  // Format helper to ensure both link/live and tags/technologies are normalized
-  const normalizeProject = (p, defaultIdx = 0) => {
-    const tagsArray = Array.isArray(p.tags)
-      ? p.tags
-      : (typeof p.tags === "string" ? p.tags.split(",").map((t) => t.trim()).filter(Boolean) : (p.techStack || []));
-    const techString = p.technologies || (tagsArray.length > 0 ? tagsArray.join(" • ") : "");
-    const targetLink = p.link || p.live || p.github || "#";
-
-    let projectImage = p.image;
-    const defaultThumbnail = `/images/projects/project-${p.id || defaultIdx + 1}.webp`;
-    if (!projectImage || projectImage.includes("eliyas-photo.png") || projectImage === "/project-placeholder.webp") {
-      projectImage = defaultThumbnail;
-    }
-
-    // Normalize Screenshots (Ensure 3 showcase screenshots)
-    let screenshots = p.screenshots;
-    if (typeof screenshots === "string" && screenshots.startsWith("[")) {
-      try {
-        screenshots = JSON.parse(screenshots);
-      } catch (e) {
-        screenshots = [];
-      }
-    } else if (typeof screenshots === "string" && screenshots.includes(",")) {
-      screenshots = screenshots.split(",").map((s) => s.trim()).filter(Boolean);
-    }
-    const pid = p.id || defaultIdx + 1;
-    if (!Array.isArray(screenshots) || screenshots.length === 0) {
-      screenshots = [
-        `/images/projects/screens/project-${pid}-s1.webp`,
-        `/images/projects/screens/project-${pid}-s2.webp`,
-        `/images/projects/screens/project-${pid}-s3.webp`,
-      ];
-    } else {
-      // Ensure at least 3 items
-      while (screenshots.length < 3) {
-        screenshots.push(`/images/projects/screens/project-${pid}-s${screenshots.length + 1}.webp`);
-      }
-    }
-
-    // Normalize Features
-    let features = p.features;
-    if (typeof features === "string" && features.startsWith("[")) {
-      try {
-        features = JSON.parse(features);
-      } catch (e) {
-        features = features.split("\n").filter(Boolean);
-      }
-    } else if (typeof features === "string") {
-      features = features.split("\n").map((f) => f.trim().replace(/^[-•*]\s*/, "")).filter(Boolean);
-    }
-    if (!Array.isArray(features) || features.length === 0) {
-      features = [
-        "Engineered with scalable micro-architecture and high-throughput data processing.",
-        "Integrated modern API workflows, automated error handling, and structured schema validations.",
-        "Ultra-responsive interface with dark cyberpunk styling and seamless micro-interactions.",
-        "Production-ready deployment on modern cloud edge infrastructure with zero cold starts."
-      ];
-    }
-
-    const howBuilt = p.how_built || `This project was engineered by Eliyas Hasan to address complex workflow challenges and deliver high-impact digital experiences. Combining modern frontend frameworks with robust backend services and autonomous AI pipelines, the architecture guarantees fast load times, bulletproof data integrity, and intuitive user experiences.`;
-
-    return {
-      id: pid,
-      title: p.title || "Untitled Project",
-      category: p.category || "Full-Stack Web Development",
-      description: p.description || "",
-      technologies: techString,
-      tags: tagsArray,
-      image: projectImage,
-      screenshots: screenshots.slice(0, 3),
-      how_built: howBuilt,
-      features: features,
-      github: p.github || "",
-      live: p.live || p.link || "",
-      link: targetLink,
-      order_index: p.order_index !== undefined ? p.order_index : defaultIdx,
-      created_at: p.created_at || new Date().toISOString(),
-    };
-  };
-
   if (d1Projects.length > 0) {
     return d1Projects.map((p, idx) => normalizeProject(p, idx));
   }
 
-  if (localProjects.length > 0) {
-    return localProjects.map((p, idx) => normalizeProject(p, idx));
-  }
-
-  // Default to config.projects
-  return config.projects.map((p, idx) => normalizeProject(p, idx));
+  return getSynchronousProjects();
 }
 
 /**
@@ -290,7 +298,7 @@ export async function updateProject(id, projectData) {
 
   const current = await getAllProjects();
   const updated = current.map((p) =>
-    p.id === id
+    String(p.id) === String(id)
       ? {
           ...p,
           ...projectData,
@@ -319,7 +327,7 @@ export async function deleteProject(id) {
   } catch (e) {}
 
   const current = await getAllProjects();
-  const updated = current.filter((p) => p.id !== id);
+  const updated = current.filter((p) => String(p.id) !== String(id));
   localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
   return { success: true };
 }

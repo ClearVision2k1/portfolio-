@@ -2,16 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { config } from "../data/config";
-import { getAllProjects } from "../services/projectService";
+import { getAllProjects, getSynchronousProjects } from "../services/projectService";
 
 export default function AllWorks() {
-  const [projects, setProjects] = useState(() => config.projects);
+  const [projects, setProjects] = useState(() => getSynchronousProjects());
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "instant" });
     let isMounted = true;
     getAllProjects().then((all) => {
-      if (isMounted && all && all.length > 0) {
+      if (isMounted && all && Array.isArray(all)) {
         setProjects(all);
       }
     });

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { config } from "../data/config";
-import { getAllProjects } from "../services/projectService";
+import { getAllProjects, getSynchronousProjects } from "../services/projectService";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,15 +12,15 @@ export default function WorkSection() {
   const sectionRef = useRef(null);
   const flexRef = useRef(null);
 
-  // Initialize with static projects, then sync with dynamic backend / cache
+  // Initialize immediately from localStorage cache or config.projects fallback (0 delay / no flash)
   const [projects, setProjects] = useState(() =>
-    config.projects.filter((p) => p.featured !== false).slice(0, 5)
+    getSynchronousProjects().slice(0, 5)
   );
 
   useEffect(() => {
     let isMounted = true;
     getAllProjects().then((all) => {
-      if (isMounted && all && all.length > 0) {
+      if (isMounted && all && Array.isArray(all)) {
         setProjects(all.slice(0, 5));
       }
     });
