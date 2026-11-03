@@ -141,7 +141,7 @@ export default function LoadingScreen({ onComplete }) {
 
         {/* Nicher dike: Text & Capsule Button */}
         <div className="loader-info-group">
-          <h2 className="loader-developer-name">{config.developer.fullName}</h2>
+          <h2 className="loader-developer-name">{config.developer.fullName.toUpperCase()}</h2>
           <p className="loader-developer-role">
             {config.developer.title} • {config.developer.secondaryTitle}
           </p>
