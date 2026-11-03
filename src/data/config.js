@@ -130,6 +130,62 @@ export const config = {
   projects: [
     {
       id: 1,
+      title: "Intezam — Multi-Tenant Madrasa ERP",
+      category: "Full-Stack Web Development",
+      technologies: "Next.js 14, React, TypeScript, Tailwind CSS, Fastify, PostgreSQL, Drizzle ORM, PWA, Vitest",
+      tags: ["Next.js 14", "React", "TypeScript", "Tailwind CSS", "Fastify", "PostgreSQL", "Drizzle ORM", "PWA", "Vitest"],
+      image: "/images/projects/intezam-thumb.webp",
+      screenshots: [
+        "/images/projects/intezam-screen-1.webp",
+        "/images/projects/intezam-screen-2.webp",
+        "/images/projects/intezam-screen-3.webp",
+      ],
+      description:
+        "Intezam is an enterprise multi-tenant ERP platform designed for madrasas and schools in Bangladesh. It features 30-Para visual Hifz progress tracking, Shariah-compliant 4-fund accounting, live smartphone camera QR attendance, boarding mess management, and role-based portals (Muhtamim, Accountant, Teacher, Guardian) with installable PWA support.",
+      features: [
+        "Multi-tenant architecture with PostgreSQL Row-Level Security (RLS)",
+        "30-Para visual Hifzul Quran heatmap & daily Sabaq diary",
+        "Shariah-compliant double-entry accounting with isolated 4-fund treasury",
+        "Live smartphone camera QR attendance scanner with HMAC tokens",
+        "MFS online fee checkout (bKash & Nagad) with printable receipts",
+        "Boarding & mess manager with automated daily meal-rate calculator",
+        "Installable Progressive Web App (PWA) with dark navy cyber theme",
+      ],
+      how_built:
+        "• Architecture: Engineered a high-scale multi-tenant PostgreSQL backend with Row-Level Security (RLS) and table partitioning for complete data isolation.\n• Shariah Accounting: Built a double-entry ledger with automated checks preventing cross-fund violations between Zakat/Lillah, General, Mosque, and Building funds.\n• Camera QR & PWA: Implemented a smartphone camera QR attendance scanner and service-worker offline caching for low-connectivity classrooms.\n• Frontend & RBAC: Developed with Next.js 14 App Router, mobile-first responsive layouts, and distinct dashboards for all 4 user roles.\n• Quality & Integrity: Authored 188+ automated unit and integration tests covering all core business logic engines.",
+      link: "https://github.com/ClearVision2k1",
+      github: "https://github.com/ClearVision2k1",
+      featured: true,
+    },
+    {
+      id: 2,
+      title: "AI Facebook Page Automation & Islamic Photocard Publisher",
+      category: "AI Automation",
+      technologies: "Python, Meta Graph API, Google Gemini AI, Playwright, Pillow (PIL), GitHub Actions, CI/CD, Cron Job, FastAPI",
+      tags: ["Python", "Meta Graph API", "Google Gemini AI", "Playwright", "Pillow (PIL)", "GitHub Actions", "CI/CD", "Cron Job", "FastAPI"],
+      image: "/images/projects/facebook-automation-thumb.webp",
+      screenshots: [
+        "/images/projects/facebook-automation-screen-1.webp",
+        "/images/projects/facebook-automation-screen-2.webp",
+      ],
+      description:
+        "An autonomous, serverless social media automation pipeline built with Python, Meta Graph API, and Google Gemini AI. The system dynamically generates and schedules authentic Islamic daily posts, renders high-resolution aesthetic photocards with Bengali typography, and automatically publishes them to Facebook Pages at optimal engagement times without any manual intervention.",
+      features: [
+        "100% Autonomous 24/7 Cloud Publishing via GitHub Actions Cron",
+        "Automated High-Resolution Islamic Photocard Rendering with Custom Typography",
+        "Dynamic AI-Powered Caption & Hashtag Generation using Google Gemini",
+        "Direct Meta Graph API Integration for Zero-Manual-Effort Facebook Publishing",
+        "Deduplication Engine with Automatic State Tracking & History Synchronization",
+        "Multi-Schedule Slot Logic (Morning Text, Afternoon Card, Night Card)",
+      ],
+      how_built:
+        "1. Architecture & Workflow Design:\nDesigned a modular, decoupled automation pipeline consisting of a Data Tracker, Gemini AI Caption Generator, Photocard Renderer, and Meta Graph API Publisher.\n\n2. Dynamic Photocard Rendering:\nLeveraged Python Pillow (PIL) and Playwright with custom Unicode font rendering (Kalpurush) to generate high-resolution, branded photocards on emerald green & midnight blue themes.\n\n3. AI Content Enhancement:\nIntegrated Google Gemini API to structure engaging, emotionally resonant Bengali captions, context explanations, and targeted hashtags while preserving text authenticity.\n\n4. Cloud Orchestration & Zero-Cost CI/CD:\nConfigured GitHub Actions cron jobs to trigger 3 times daily (8:00 AM, 2:00 PM, 9:00 PM BST). The workflow executes autonomously in an Ubuntu container and automatically commits updated posting history to prevent duplicate posts.",
+      link: "https://github.com/mdeleas2k1-collab/sunnah-automation-post",
+      github: "https://github.com/mdeleas2k1-collab/sunnah-automation-post",
+      featured: true,
+    },
+    {
+      id: 3,
       title: "Intelligent Web Automation Hub",
       category: "Full-Stack / AI Automation",
       technologies: "React, Node.js, Python, FastAPI, TailwindCSS",
@@ -140,7 +196,7 @@ export const config = {
       featured: true,
     },
     {
-      id: 2,
+      id: 4,
       title: "Enterprise Web Application",
       category: "Full-Stack Platform",
       technologies: "React, Express, MongoDB, TailwindCSS",
@@ -151,7 +207,7 @@ export const config = {
       featured: true,
     },
     {
-      id: 3,
+      id: 5,
       title: "Modern E-Commerce Engine",
       category: "Web & Payment Integration",
       technologies: "Next.js, TypeScript, Stripe, PostgreSQL",
@@ -162,7 +218,7 @@ export const config = {
       featured: true,
     },
     {
-      id: 4,
+      id: 6,
       title: "Autonomous AI Agent Workflow",
       category: "AI Agents / LLM Orchestration",
       technologies: "Python, LangChain, OpenAI / Gemini, FastAPI",
@@ -170,10 +226,10 @@ export const config = {
       description:
         "Multi-agent autonomous framework coordinating specialized AI workers to perform research, code generation, and task synthesis.",
       link: "https://github.com/ClearVision2k1",
-      featured: true,
+      featured: false,
     },
     {
-      id: 5,
+      id: 7,
       title: "Real-Time 3D Web Experience",
       category: "Creative WebGL / Three.js",
       technologies: "Three.js, React Three Fiber, GSAP, WebGL",
@@ -181,10 +237,10 @@ export const config = {
       description:
         "Immersive interactive 3D web experience featuring dynamic physics, custom shaders, smooth camera choreographies, and WebGL rendering.",
       link: "https://github.com/ClearVision2k1",
-      featured: true,
+      featured: false,
     },
     {
-      id: 6,
+      id: 8,
       title: "Drishti AI — Large Language Model",
       category: "AI / LLM",
       technologies: "Python, PyTorch, Transformers, FastAPI, React, MongoDB",
@@ -195,7 +251,7 @@ export const config = {
       featured: false,
     },
     {
-      id: 7,
+      id: 9,
       title: "VoteChain — Decentralized Voting System",
       category: "Blockchain / Web3",
       technologies: "Solidity, Web3.js, React, Ethereum, IPFS, MetaMask, Node.js",
@@ -206,7 +262,7 @@ export const config = {
       featured: false,
     },
     {
-      id: 8,
+      id: 10,
       title: "Flood Spaces 2.0 — Disaster Prediction AI",
       category: "AI / Machine Learning",
       technologies: "Python, TensorFlow, Pandas, React, FastAPI, GIS",
@@ -217,7 +273,7 @@ export const config = {
       featured: false,
     },
     {
-      id: 9,
+      id: 11,
       title: "HealthPulse — Clinical AI Diagnosis Copilot",
       category: "Healthcare AI / Computer Vision",
       technologies: "Python, PyTorch, OpenCV, Next.js, FastAPI, Docker",
@@ -228,7 +284,7 @@ export const config = {
       featured: false,
     },
     {
-      id: 10,
+      id: 12,
       title: "ApexTrade — Algorithmic Crypto Trading Engine",
       category: "FinTech / High-Frequency Trading",
       technologies: "TypeScript, Python, WebSockets, PostgreSQL, Redis, Next.js",
@@ -239,7 +295,7 @@ export const config = {
       featured: false,
     },
     {
-      id: 11,
+      id: 13,
       title: "CyberGuard — Cloud Security & Vulnerability Scanner",
       category: "DevSecOps / Cloud Security",
       technologies: "Go, Python, Docker, Kubernetes, GraphQL, React",
