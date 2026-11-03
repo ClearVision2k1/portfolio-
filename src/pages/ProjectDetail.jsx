@@ -80,15 +80,31 @@ export default function ProjectDetail() {
       ? allProjects[currentIndex + 1]
       : null;
 
-  // Normalize 3 screenshots
-  const screenshots =
-    Array.isArray(project.screenshots) && project.screenshots.length >= 3
-      ? project.screenshots
-      : [
-          `/images/projects/screens/project-${project.id}-s1.webp`,
-          `/images/projects/screens/project-${project.id}-s2.webp`,
-          `/images/projects/screens/project-${project.id}-s3.webp`,
-        ];
+  // Extract all valid, non-empty screenshot URLs
+  const customScreens = Array.isArray(project.screenshots)
+    ? project.screenshots.filter(
+        (s) => s && typeof s === "string" && s.trim().length > 0
+      )
+    : [];
+
+  let screenshots = [];
+  if (customScreens.length > 0) {
+    screenshots = customScreens;
+  } else {
+    // Check if default webp screenshots exist (projects 1-11)
+    const pid = Number(project.id);
+    if (!isNaN(pid) && pid >= 1 && pid <= 11) {
+      screenshots = [
+        `/images/projects/screens/project-${pid}-s1.webp`,
+        `/images/projects/screens/project-${pid}-s2.webp`,
+        `/images/projects/screens/project-${pid}-s3.webp`,
+      ];
+    } else if (project.image) {
+      screenshots = [project.image];
+    } else {
+      screenshots = [`/images/projects/project-1.webp`];
+    }
+  }
 
   return (
     <div className="project-detail-page">
@@ -124,80 +140,44 @@ export default function ProjectDetail() {
         </section>
 
         {/* ============================================================== */}
-        {/* TOP SECTION: 3 SHOWCASE SCREENSHOTS */}
+        {/* VERTICAL SCREENSHOTS STACK (প্রথমটা, তার নিচে একটা, তার নিচে একটা) */}
         {/* ============================================================== */}
-        <section className="project-screens-showcase">
-          <div className="screens-header-row">
-            <div>
-              <h3>Project Showcase (3 Screenshots)</h3>
-              <p>Explore the core user interface, workflow architecture, and system telemetry.</p>
-            </div>
-            <div className="screens-counter">
-              <span>{activeScreenIndex + 1}</span> / <span>{screenshots.length}</span>
-            </div>
-          </div>
-
-          {/* Active Featured Screenshot */}
-          <div className="screens-featured-frame">
-            <img
-              src={screenshots[activeScreenIndex]}
-              alt={`${project.title} Screenshot ${activeScreenIndex + 1}`}
-              className="featured-screen-img"
-            />
-
-            {/* Navigation arrows */}
-            <button
-              type="button"
-              className="screen-nav-arrow screen-arrow-prev"
-              onClick={() =>
-                setActiveScreenIndex(
-                  (prev) => (prev - 1 + screenshots.length) % screenshots.length
-                )
-              }
-              title="Previous Screenshot"
-            >
-              <ChevronLeft size={22} />
-            </button>
-            <button
-              type="button"
-              className="screen-nav-arrow screen-arrow-next"
-              onClick={() =>
-                setActiveScreenIndex((prev) => (prev + 1) % screenshots.length)
-              }
-              title="Next Screenshot"
-            >
-              <ChevronRight size={22} />
-            </button>
-          </div>
-
-          {/* 3 Screenshot Selectors Row */}
-          <div className="screens-thumbs-grid">
-            {screenshots.map((screen, idx) => (
-              <button
-                key={idx}
-                type="button"
-                className={`screen-thumb-card ${
-                  activeScreenIndex === idx ? "active" : ""
-                }`}
-                onClick={() => setActiveScreenIndex(idx)}
-              >
-                <div className="thumb-preview">
-                  <img src={screen} alt={`Thumbnail ${idx + 1}`} />
-                  <span className="thumb-index">0{idx + 1}</span>
+        <section className="project-screens-vertical-stack">
+          {screenshots.map((screen, idx) => {
+            const labels = [
+              "Core User Interface & Application Overview",
+              "System Architecture & Workflow Deep-Dive",
+              "Production Telemetry & Live Execution Results",
+            ];
+            return (
+              <div key={idx} className="stacked-screen-card">
+                <div className="stacked-screen-bar">
+                  <div className="stacked-screen-badge">
+                    <span className="stacked-badge-dot" />
+                    <span>0{idx + 1} • {labels[idx] || `Project Showcase View ${idx + 1}`}</span>
+                  </div>
+                  <div className="stacked-screen-window-dots">
+                    <span className="w-dot red" />
+                    <span className="w-dot yellow" />
+                    <span className="w-dot green" />
+                  </div>
                 </div>
-                <div className="thumb-info">
-                  <h4>
-                    {idx === 0
-                      ? "Core App Interface"
-                      : idx === 1
-                      ? "Architecture & Deep-Dive"
-                      : "Telemetry & Live Output"}
-                  </h4>
-                  <p>Click to inspect view</p>
+
+                <div className="stacked-screen-viewport">
+                  <img
+                    src={screen}
+                    alt={`${project.title} Screenshot 0${idx + 1}`}
+                    loading={idx === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                    onError={(e) => {
+                      const card = e.target.closest(".stacked-screen-card");
+                      if (card) card.style.display = "none";
+                    }}
+                  />
                 </div>
-              </button>
-            ))}
-          </div>
+              </div>
+            );
+          })}
         </section>
 
         {/* ============================================================== */}
