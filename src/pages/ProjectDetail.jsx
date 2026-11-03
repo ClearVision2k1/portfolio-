@@ -143,41 +143,34 @@ export default function ProjectDetail() {
         {/* VERTICAL SCREENSHOTS STACK (প্রথমটা, তার নিচে একটা, তার নিচে একটা) */}
         {/* ============================================================== */}
         <section className="project-screens-vertical-stack">
-          {screenshots.map((screen, idx) => {
-            const labels = [
-              "Core User Interface & Application Overview",
-              "System Architecture & Workflow Deep-Dive",
-              "Production Telemetry & Live Execution Results",
-            ];
-            return (
-              <div key={idx} className="stacked-screen-card">
-                <div className="stacked-screen-bar">
-                  <div className="stacked-screen-badge">
-                    <span className="stacked-badge-dot" />
-                    <span>0{idx + 1} • {labels[idx] || `Project Showcase View ${idx + 1}`}</span>
-                  </div>
-                  <div className="stacked-screen-window-dots">
-                    <span className="w-dot red" />
-                    <span className="w-dot yellow" />
-                    <span className="w-dot green" />
-                  </div>
+          {screenshots.map((screen, idx) => (
+            <div key={idx} className="stacked-screen-card">
+              <div className="stacked-screen-bar">
+                <div className="stacked-screen-badge">
+                  <span className="stacked-badge-dot" />
+                  <span>Screenshot 0{idx + 1}</span>
                 </div>
-
-                <div className="stacked-screen-viewport">
-                  <img
-                    src={screen}
-                    alt={`${project.title} Screenshot 0${idx + 1}`}
-                    loading={idx === 0 ? "eager" : "lazy"}
-                    decoding="async"
-                    onError={(e) => {
-                      const card = e.target.closest(".stacked-screen-card");
-                      if (card) card.style.display = "none";
-                    }}
-                  />
+                <div className="stacked-screen-window-dots">
+                  <span className="w-dot red" />
+                  <span className="w-dot yellow" />
+                  <span className="w-dot green" />
                 </div>
               </div>
-            );
-          })}
+
+              <div className="stacked-screen-viewport">
+                <img
+                  src={screen}
+                  alt={`${project.title} Screenshot 0${idx + 1}`}
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  onError={(e) => {
+                    const card = e.target.closest(".stacked-screen-card");
+                    if (card) card.style.display = "none";
+                  }}
+                />
+              </div>
+            </div>
+          ))}
         </section>
 
         {/* ============================================================== */}
@@ -186,79 +179,76 @@ export default function ProjectDetail() {
         <section className="project-content-grid">
           {/* Main Column */}
           <div className="project-main-column">
-            {/* Action Bar (Live Demo & Source Code) */}
-            <div className="project-action-card">
-              <div className="action-card-text">
-                <h3>Experience the Live Build</h3>
-                <p>Test the working deployment or inspect the production code on GitHub.</p>
-              </div>
+            {/* Action Bar (Live Demo & Source Code) - Only show if genuine links exist */}
+            {(Boolean(project.live && project.live !== "#") || Boolean(project.github && project.github !== "#")) && (
+              <div className="project-action-card">
+                <div className="action-card-text">
+                  <h3>Project Links</h3>
+                  <p>Explore the live application or view source code repository.</p>
+                </div>
 
-              <div className="action-buttons-group">
-                {(project.live || project.link) && (
-                  <a
-                    href={project.live || project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-cta-primary"
-                    data-cursor="disable"
-                  >
-                    <span>Launch Live Demo</span>
-                    <ExternalLink size={16} />
-                  </a>
-                )}
+                <div className="action-buttons-group">
+                  {project.live && project.live !== "#" && (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-cta-primary"
+                      data-cursor="disable"
+                    >
+                      <span>Launch Live Demo</span>
+                      <ExternalLink size={16} />
+                    </a>
+                  )}
 
-                {project.github && (
-                  <a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="project-cta-secondary"
-                    data-cursor="disable"
-                  >
-                    <Github size={16} />
-                    <span>View GitHub Repo</span>
-                  </a>
-                )}
+                  {project.github && project.github !== "#" && (
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-cta-secondary"
+                      data-cursor="disable"
+                    >
+                      <Github size={16} />
+                      <span>View GitHub Repo</span>
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Section 1: Project Overview */}
-            <div className="project-content-block">
-              <div className="block-title-row">
-                <div className="block-icon">
-                  <Layers size={18} color="#a87cff" />
+            {project.description && (
+              <div className="project-content-block">
+                <div className="block-title-row">
+                  <div className="block-icon">
+                    <Layers size={18} color="#a87cff" />
+                  </div>
+                  <h2>Project Overview</h2>
                 </div>
-                <h2>Project Overview</h2>
+                <p className="block-body-text">{project.description}</p>
               </div>
-              <p className="block-body-text">{project.description}</p>
-            </div>
+            )}
 
             {/* Section 2: How I Built This ("আমি কিভাবে প্রজেক্টগুলা করলাম") */}
-            <div className="project-content-block">
-              <div className="block-title-row">
-                <div className="block-icon">
-                  <Cpu size={18} color="#a87cff" />
+            {project.how_built && project.how_built.trim().length > 0 && (
+              <div className="project-content-block">
+                <div className="block-title-row">
+                  <div className="block-icon">
+                    <Cpu size={18} color="#a87cff" />
+                  </div>
+                  <h2>How I Built This Project</h2>
                 </div>
-                <h2>How I Built This Project</h2>
-              </div>
-              <div className="block-body-text how-built-body">
-                {project.how_built ? (
-                  project.how_built.split("\n\n").map((para, idx) => (
+                <div className="block-body-text how-built-body">
+                  {project.how_built.split("\n\n").map((para, idx) => (
                     <p key={idx}>{para}</p>
-                  ))
-                ) : (
-                  <p>
-                    Engineered from ground up with modern software design
-                    principles. Focused on responsive frontend architecture,
-                    low-latency API communications, and robust cloud data
-                    synchronization.
-                  </p>
-                )}
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Section 3: Key Features & Capabilities */}
-            {project.features && project.features.length > 0 && (
+            {Array.isArray(project.features) && project.features.length > 0 && (
               <div className="project-content-block">
                 <div className="block-title-row">
                   <div className="block-icon">
@@ -281,40 +271,56 @@ export default function ProjectDetail() {
           {/* Sidebar Column */}
           <aside className="project-sidebar-column">
             {/* Tech Stack Box */}
-            <div className="project-meta-card">
-              <h3>Technologies Used</h3>
-              <div className="meta-tags-list">
-                {(Array.isArray(project.tags)
-                  ? project.tags
-                  : (project.tags || "").split(",")
-                ).map((tag, idx) => (
-                  <span key={idx} className="meta-tag-badge">
-                    {tag.trim()}
-                  </span>
-                ))}
+            {((Array.isArray(project.tags) && project.tags.length > 0) || project.tags) && (
+              <div className="project-meta-card">
+                <h3>Technologies Used</h3>
+                <div className="meta-tags-list">
+                  {(Array.isArray(project.tags)
+                    ? project.tags
+                    : (project.tags || "").split(",")
+                  ).map((tag, idx) => (
+                    <span key={idx} className="meta-tag-badge">
+                      {tag.trim()}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
-            {/* Specifications Card */}
+            {/* Clean Specifications Card without hardcoded AI samples */}
             <div className="project-meta-card">
               <h3>Project Meta</h3>
               <div className="meta-spec-list">
                 <div className="meta-spec-item">
-                  <span className="spec-label">Role</span>
-                  <span className="spec-value">Lead Developer & Automation Specialist</span>
-                </div>
-                <div className="meta-spec-item">
                   <span className="spec-label">Category</span>
-                  <span className="spec-value">{project.category}</span>
+                  <span className="spec-value">{project.category || "Full-Stack Web Development"}</span>
                 </div>
-                <div className="meta-spec-item">
-                  <span className="spec-label">Status</span>
-                  <span className="spec-value status-live">Live & Production Ready</span>
-                </div>
-                <div className="meta-spec-item">
-                  <span className="spec-label">Database</span>
-                  <span className="spec-value">Cloudflare D1 & Edge Cache</span>
-                </div>
+                {project.live && project.live !== "#" && (
+                  <div className="meta-spec-item">
+                    <span className="spec-label">Live Site</span>
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="spec-value spec-link"
+                    >
+                      Visit Site ↗
+                    </a>
+                  </div>
+                )}
+                {project.github && project.github !== "#" && (
+                  <div className="meta-spec-item">
+                    <span className="spec-label">Source Code</span>
+                    <a
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="spec-value spec-link"
+                    >
+                      GitHub ↗
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </aside>

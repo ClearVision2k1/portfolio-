@@ -111,7 +111,7 @@ export const normalizeProject = (p, defaultIdx = 0) => {
     projectImage = defaultThumbnail;
   }
 
-  // Normalize Screenshots (Ensure 3 showcase screenshots)
+  // Normalize Screenshots (only return valid screenshots, do not pad with fake files)
   let screenshots = p.screenshots;
   if (typeof screenshots === "string" && screenshots.startsWith("[")) {
     try {
@@ -121,22 +121,15 @@ export const normalizeProject = (p, defaultIdx = 0) => {
     }
   } else if (typeof screenshots === "string" && screenshots.includes(",")) {
     screenshots = screenshots.split(",").map((s) => s.trim()).filter(Boolean);
+  } else if (typeof screenshots === "string" && screenshots.trim().length > 0) {
+    screenshots = [screenshots.trim()];
   }
-  const pid = p.id || defaultIdx + 1;
-  if (!Array.isArray(screenshots) || screenshots.length === 0) {
-    screenshots = [
-      `/images/projects/screens/project-${pid}-s1.webp`,
-      `/images/projects/screens/project-${pid}-s2.webp`,
-      `/images/projects/screens/project-${pid}-s3.webp`,
-    ];
-  } else {
-    // Ensure at least 3 items
-    while (screenshots.length < 3) {
-      screenshots.push(`/images/projects/screens/project-${pid}-s${screenshots.length + 1}.webp`);
-    }
+  if (!Array.isArray(screenshots)) {
+    screenshots = [];
   }
+  screenshots = screenshots.filter((s) => s && typeof s === "string" && s.trim().length > 0);
 
-  // Normalize Features
+  // Normalize Features (no fake AI bullet points)
   let features = p.features;
   if (typeof features === "string" && features.startsWith("[")) {
     try {
@@ -147,26 +140,22 @@ export const normalizeProject = (p, defaultIdx = 0) => {
   } else if (typeof features === "string") {
     features = features.split("\n").map((f) => f.trim().replace(/^[-•*]\s*/, "")).filter(Boolean);
   }
-  if (!Array.isArray(features) || features.length === 0) {
-    features = [
-      "Engineered with scalable micro-architecture and high-throughput data processing.",
-      "Integrated modern API workflows, automated error handling, and structured schema validations.",
-      "Ultra-responsive interface with dark cyberpunk styling and seamless micro-interactions.",
-      "Production-ready deployment on modern cloud edge infrastructure with zero cold starts."
-    ];
+  if (!Array.isArray(features)) {
+    features = [];
   }
+  features = features.filter((f) => f && typeof f === "string" && f.trim().length > 0);
 
-  const howBuilt = p.how_built || `This project was engineered by Eliyas Hasan to address complex workflow challenges and deliver high-impact digital experiences. Combining modern frontend frameworks with robust backend services and autonomous AI pipelines, the architecture guarantees fast load times, bulletproof data integrity, and intuitive user experiences.`;
+  const howBuilt = p.how_built ? String(p.how_built).trim() : "";
 
   return {
-    id: pid,
+    id: p.id !== undefined ? p.id : defaultIdx + 1,
     title: p.title || "Untitled Project",
     category: p.category || "Full-Stack Web Development",
     description: p.description || "",
     technologies: techString,
     tags: tagsArray,
     image: projectImage,
-    screenshots: screenshots.slice(0, 3),
+    screenshots: screenshots,
     how_built: howBuilt,
     features: features,
     github: p.github || "",

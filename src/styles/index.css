@@ -4404,6 +4404,19 @@ a.contact-social:hover {
   text-align: right;
 }
 
+.spec-value.spec-link {
+  color: #a87cff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.spec-value.spec-link:hover {
+  color: #c084fc;
+  text-decoration: underline;
+  text-shadow: 0 0 10px rgba(168, 124, 255, 0.4);
+}
+
 .spec-value.status-live {
   color: #22c55e;
 }
