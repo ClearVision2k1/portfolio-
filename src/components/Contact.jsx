@@ -109,7 +109,17 @@ export default function Contact() {
             </div>
 
             {/* Col 3: Attribution & Copyright */}
-            <div className="contact-box">
+            <div className="contact-box contact-author-box">
+              <div className="footer-author-avatar">
+                <img
+                  src={config.developer.photo || "/images/eliyas.png"}
+                  alt={config.developer.fullName}
+                  loading="lazy"
+                  onError={(e) => {
+                    e.target.src = "/images/eliyas-avatar.png";
+                  }}
+                />
+              </div>
               <h2>
                 Designed and Developed <br />
                 by <span>{config.developer.fullName}</span>
