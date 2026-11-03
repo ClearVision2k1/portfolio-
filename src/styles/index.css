@@ -1935,13 +1935,12 @@ li:hover .hover-in {
 
 .contact-section {
   margin: 0 auto auto;
-  padding-bottom: 120px;
+  padding-bottom: 30px;
   position: relative;
   z-index: 10;
   background: rgba(11, 8, 12, 0.72);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  min-height: 45vh;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -2020,12 +2019,18 @@ a.contact-social:hover {
   align-items: flex-start;
 }
 
+@media only screen and (min-width: 900px) {
+  .contact-author-box {
+    margin-top: -95px;
+  }
+}
+
 .footer-avatar-wrapper {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 12px;
   width: fit-content;
 }
 
@@ -2108,7 +2113,7 @@ a.contact-social:hover {
   display: flex;
   gap: 8px;
   opacity: 0.5;
-  margin-top: 15px;
+  margin-top: 8px;
   color: #eae5ec;
 }
 
