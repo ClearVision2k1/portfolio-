@@ -1491,6 +1491,10 @@ li:hover .hover-in {
 }
 
 @media only screen and (max-width: 900px) {
+  .career-section {
+    margin: 0 auto 0 !important;
+    padding: 60px 0 10px;
+  }
   .career-section h2 {
     font-size: 42px;
     line-height: 44px;
@@ -1501,6 +1505,9 @@ li:hover .hover-in {
     gap: 16px;
     margin-bottom: 50px;
     padding-left: 32px;
+  }
+  .career-info-box:last-child {
+    margin-bottom: 0 !important;
   }
   .career-info-in,
   .career-info-desc {
@@ -1524,17 +1531,22 @@ li:hover .hover-in {
 
 @media only screen and (max-width: 600px) {
   .career-section {
-    padding: 50px 0 30px;
+    padding: 30px 0 0;
+    margin: 0 auto 0 !important;
   }
   .career-section h2 {
     font-size: 32px;
     line-height: 36px;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
+    margin-top: 10px;
   }
   .career-info-box {
     gap: 12px;
-    margin-bottom: 36px;
+    margin-bottom: 28px;
     padding-left: 22px;
+  }
+  .career-info-box:last-child {
+    margin-bottom: 0 !important;
   }
   .career-info h3 {
     font-size: 22px;
@@ -1844,7 +1856,7 @@ li:hover .hover-in {
   .work-section {
     height: auto;
     min-height: auto;
-    padding: 60px 0 30px;
+    padding: 10px 0 30px;
   }
   .work-flex {
     flex-direction: column;
@@ -1865,8 +1877,8 @@ li:hover .hover-in {
   }
   .work-section h2 {
     font-size: 32px;
-    margin-top: 15px;
-    margin-bottom: 24px;
+    margin-top: 0;
+    margin-bottom: 20px;
   }
   .work-image {
     width: 100%;
@@ -2423,21 +2435,37 @@ a.contact-social:hover {
     align-items: center;
     width: 100%;
     position: absolute;
-    top: 50%;
+    top: 48%;
     left: 50%;
-    transform: translate(-50%, -46%);
+    transform: translate(-50%, -48%);
     z-index: 2;
     pointer-events: none;
   }
+  .mobile-photo::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 72%;
+    max-width: 280px;
+    height: 55px;
+    background: radial-gradient(ellipse at center bottom, rgba(194, 164, 255, 0.45) 0%, rgba(170, 66, 255, 0.2) 42%, transparent 75%);
+    filter: blur(14px);
+    pointer-events: none;
+    z-index: 3;
+  }
   .mobile-photo img {
-    max-height: 48vh;
-    max-width: 85vw;
+    max-height: 53vh;
+    max-width: 88vw;
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.8));
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 68%, rgba(0, 0, 0, 0.65) 82%, rgba(0, 0, 0, 0.18) 93%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 68%, rgba(0, 0, 0, 0.65) 82%, rgba(0, 0, 0, 0.18) 93%, transparent 100%);
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.85)) drop-shadow(0 20px 28px rgba(170, 66, 255, 0.25));
   }
   .landing-info {
-    bottom: 24px;
+    bottom: 28px;
     width: 100%;
     padding: 0 15px;
     box-sizing: border-box;
@@ -2481,18 +2509,33 @@ a.contact-social:hover {
     line-height: 1.1;
     letter-spacing: 1.2px;
   }
+  .mobile-photo {
+    top: 48%;
+    transform: translate(-50%, -48%);
+  }
+  .mobile-photo::after {
+    bottom: -2px;
+    width: 76%;
+    max-width: 250px;
+    height: 50px;
+    background: radial-gradient(ellipse at center bottom, rgba(194, 164, 255, 0.48) 0%, rgba(170, 66, 255, 0.22) 42%, transparent 75%);
+    filter: blur(12px);
+  }
   .mobile-photo img {
-    max-height: 44vh;
+    max-height: 50vh;
+    max-width: 88vw;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 66%, rgba(0, 0, 0, 0.65) 80%, rgba(0, 0, 0, 0.18) 92%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 66%, rgba(0, 0, 0, 0.65) 80%, rgba(0, 0, 0, 0.18) 92%, transparent 100%);
   }
   .landing-info {
-    bottom: 18px;
+    bottom: 22px;
   }
   .role-block h2 {
     font-size: 13.5px;
     letter-spacing: 1.2px;
   }
   .landing-roles {
-    gap: 10px;
+    gap: 8px;
   }
 
   /* Footer avatar scaling for small mobile screens */
