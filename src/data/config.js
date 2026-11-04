@@ -1,6 +1,6 @@
 /**
  * Single Source of Truth for Portfolio Data (Eliyas Hasan)
- * Build v1.2.7 - Direct WhatsApp Integration for Hire Me CTA
+ * Build v1.2.8 - Cyber Duel: Rock Paper Scissors AI Bot Game
  */
 
 export const config = {

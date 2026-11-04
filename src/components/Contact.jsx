@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { config } from "../data/config";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import PlayGameModal from "./PlayGameModal";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +17,8 @@ function getWhatsAppUrl(phone, message) {
 }
 
 export default function Contact() {
+  const [isGameOpen, setIsGameOpen] = useState(false);
+
   useEffect(() => {
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -46,15 +49,15 @@ export default function Contact() {
       {/* Signature Dual CTA Buttons */}
       <div className="cta-section">
         <div className="cta-buttons">
-          <a
-            href={config.social.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            type="button"
+            onClick={() => setIsGameOpen(true)}
             className="cta-btn cta-btn-play"
             data-cursor="disable"
+            title="Play Rock Paper Scissors against Eliyas AI Bot"
           >
             Play With Me &rarr;
-          </a>
+          </button>
           <a
             href={
               config.social.whatsapp
@@ -171,6 +174,12 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      {/* Cyber Duel: Rock Paper Scissors Modal */}
+      <PlayGameModal
+        isOpen={isGameOpen}
+        onClose={() => setIsGameOpen(false)}
+      />
     </>
   );
 }
