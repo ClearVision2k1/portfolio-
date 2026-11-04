@@ -5,6 +5,16 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function getWhatsAppUrl(phone, message) {
+  if (!phone) return "";
+  let digits = phone.replace(/[^0-9]/g, "");
+  if (digits.startsWith("0")) {
+    digits = "88" + digits;
+  }
+  const textQuery = message ? `?text=${encodeURIComponent(message)}` : "";
+  return `https://wa.me/${digits}${textQuery}`;
+}
+
 export default function Contact() {
   useEffect(() => {
     const tl = gsap.timeline({
@@ -46,11 +56,16 @@ export default function Contact() {
             Play With Me &rarr;
           </a>
           <a
-            href={`mailto:${config.social.email}`}
+            href={
+              config.social.whatsapp
+                ? getWhatsAppUrl(config.social.whatsapp, config.social.whatsappMessage)
+                : `mailto:${config.social.email}`
+            }
             target="_blank"
             rel="noopener noreferrer"
             className="cta-btn cta-btn-hire"
             data-cursor="disable"
+            title="Chat on WhatsApp"
           >
             Hire Me &rarr;
           </a>
@@ -106,6 +121,17 @@ export default function Contact() {
               >
                 Facebook &#8599;
               </a>
+              {config.social.whatsapp && (
+                <a
+                  href={getWhatsAppUrl(config.social.whatsapp, config.social.whatsappMessage)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-cursor="disable"
+                  className="contact-social"
+                >
+                  WhatsApp &#8599;
+                </a>
+              )}
               {config.developer.resumeUrl && (
                 <a
                   href={config.developer.resumeUrl}

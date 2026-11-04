@@ -1,6 +1,6 @@
 /**
  * Single Source of Truth for Portfolio Data (Eliyas Hasan)
- * Build v1.2.6 - Full Viewport Reveal & Dwell Hold for Final Project Card
+ * Build v1.2.7 - Direct WhatsApp Integration for Hire Me CTA
  */
 
 export const config = {
@@ -20,6 +20,8 @@ export const config = {
 
   social: {
     email: "mdeleas2k1@gmail.com",
+    whatsapp: "+8801892832956",
+    whatsappMessage: "Hello Eliyas, I saw your portfolio and would like to discuss a project with you.",
     github: "https://github.com/ClearVision2k1",
     linkedin: "https://www.linkedin.com/in/eliyashasan2k1/",
     facebook: "https://www.facebook.com/Eliyashasanofficial",
