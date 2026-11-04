@@ -41,24 +41,35 @@ export default function WorkSection() {
 
       if (!section || !flex || !boxes.length || !container) return;
 
-      const boxWidth = boxes[0].getBoundingClientRect().width || 440;
-      const parentWidth = flex.getBoundingClientRect().width || window.innerWidth;
-      const padding = 80;
-
       // Exact horizontal pin distance calculation ensuring all cards & CTA are fully revealed
       const getScrollDist = () => {
-        const f = flexRef.current;
-        if (!f) return 1500;
-        return Math.max(f.scrollWidth - window.innerWidth + 140, 800);
+        const flex = flexRef.current;
+        const boxes = flex?.querySelectorAll(".work-box");
+        if (!flex || !boxes?.length) return 1500;
+        const lastBox = boxes[boxes.length - 1];
+
+        // Total width from flex container start to the right edge of the last box
+        const lastBoxRightInFlex = lastBox.offsetLeft + lastBox.offsetWidth;
+
+        // Natural left position of flex container in viewport (accounting for centered container)
+        const flexNaturalLeft =
+          flex.getBoundingClientRect().left - (gsap.getProperty(flex, "x") || 0);
+
+        // Untranslated right edge of lastBox in viewport
+        const naturalLastBoxRight = flexNaturalLeft + lastBoxRightInFlex;
+
+        // Bring last card completely inside viewport with 120px breathing room on the right
+        const targetTravel = naturalLastBoxRight - window.innerWidth + 120;
+        return Math.max(Math.round(targetTravel), 800);
       };
 
-      const scrollDistance = getScrollDist();
+      const holdBuffer = 800;
 
       tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: `+=${scrollDistance + 600}`,
+          end: () => `+=${getScrollDist() + holdBuffer}`,
           scrub: 1,
           pin: true,
           pinSpacing: true,
@@ -68,9 +79,17 @@ export default function WorkSection() {
         },
       });
 
+      // 1. Smooth horizontal slide across all project cards
       tl.to(flex, {
         x: () => -getScrollDist(),
         ease: "none",
+        duration: 1,
+      });
+
+      // 2. Generous stationary dwell hold: keeps the final card ("Want to see more? / See All Works")
+      // completely visible and stationary on screen for ~800px of scrolling before unpinning upward
+      tl.to({}, {
+        duration: 0.5,
       });
 
       ScrollTrigger.refresh();

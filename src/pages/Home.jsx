@@ -10,6 +10,9 @@ import WorkSection from "../components/WorkSection";
 import TechStack from "../components/TechStack";
 import Contact from "../components/Contact";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +32,11 @@ export default function Home() {
       { opacity: 0 },
       { opacity: 1, duration: 1.2, ease: "power2.out", delay: 0.3 }
     );
+
+    // Recalculate ScrollTrigger measurements once DOM is unhidden and layout is settled
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 400);
   };
 
   return (

@@ -1,6 +1,6 @@
 /**
  * Single Source of Truth for Portfolio Data (Eliyas Hasan)
- * Build v1.2.5 - Standalone Cyber Project Cards with Vivid Neon Motion
+ * Build v1.2.6 - Full Viewport Reveal & Dwell Hold for Final Project Card
  */
 
 export const config = {
