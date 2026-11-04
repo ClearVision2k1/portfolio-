@@ -1,5 +1,6 @@
 /**
  * Single Source of Truth for Portfolio Data (Eliyas Hasan)
+ * Build v1.2.4 - Mobile Spacing & Neon Gradient Fade
  */
 
 export const config = {
