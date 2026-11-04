@@ -1,6 +1,6 @@
 /**
  * Single Source of Truth for Portfolio Data (Eliyas Hasan)
- * Build v1.2.4 - Mobile Spacing & Neon Gradient Fade
+ * Build v1.2.5 - Standalone Cyber Project Cards with Vivid Neon Motion
  */
 
 export const config = {

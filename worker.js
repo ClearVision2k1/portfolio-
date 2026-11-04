@@ -1,6 +1,6 @@
 /**
  * Cloudflare Worker with Native D1 Database & Static Assets Binding
- * Eliyas Hasan Personal Portfolio Backend API (v1.2.4)
+ * Eliyas Hasan Personal Portfolio Backend API (v1.2.5)
  */
 
 const DEFAULT_PASSKEY = "112212123";

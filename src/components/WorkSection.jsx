@@ -47,12 +47,9 @@ export default function WorkSection() {
 
       // Exact horizontal pin distance calculation ensuring all cards & CTA are fully revealed
       const getScrollDist = () => {
-        const b = document.querySelectorAll(".work-box");
         const f = flexRef.current;
-        if (!b.length || !f) return 1500;
-        const bw = b[0].getBoundingClientRect().width || 440;
-        const pw = f.getBoundingClientRect().width || window.innerWidth;
-        return Math.max(bw * b.length - pw + padding, 800);
+        if (!f) return 1500;
+        return Math.max(f.scrollWidth - window.innerWidth + 140, 800);
       };
 
       const scrollDistance = getScrollDist();
